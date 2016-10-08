@@ -7,8 +7,10 @@
 //
 
 #import <Photos/Photos.h>
-
+typedef void (^AlbumImageBlock)(UIImage *image);
 @interface QYAsset : NSObject
+- (instancetype)initWithPhAsset:(PHAsset *)asset;
 
-- (instancetype) initWithPhAsset:(PHAsset *)asset;
+- (UIImage *)getThumbImage;
+- (UIImage *)getFullScreenImage;
 @end
