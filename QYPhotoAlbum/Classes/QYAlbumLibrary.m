@@ -7,7 +7,7 @@
 //
 
 #import "QYAlbumLibrary.h"
-
+#import "QYAsset.h"
 @implementation QYAlbumLibrary
 
 - (instancetype)init
@@ -51,9 +51,8 @@
     [result enumerateObjectsUsingBlock:^(PHAssetCollection* _Nonnull obj, NSUInteger idx, BOOL* _Nonnull stop) {
         PHFetchResult<PHAsset*>* assets = [PHAsset fetchAssetsInAssetCollection:obj options:options];
         [assets enumerateObjectsUsingBlock:^(PHAsset* _Nonnull obj, NSUInteger idx, BOOL* _Nonnull stop) {
-
-            
-            [assetsResult addObject:obj];
+            QYAsset* asst = [[QYAsset alloc] initWithPhAsset:obj];
+            [assetsResult addObject:asst];
         }];
 
     }];

@@ -41,5 +41,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>&quot;Click&quot;Allow&quot;to authorize Philm to access your album permission.If you choose&quot;Don’t allow&quot;,your live photo in your local album will be unavailable.&quot;</string>
 </dict>
 </plist>

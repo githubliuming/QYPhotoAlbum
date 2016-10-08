@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface QYTAlbumBaseViewController : UIViewController
+@interface QYTAlbumBaseViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property(nonatomic, strong) NSMutableArray* dataSource;
+
+- (void) refreshTableView;
 @end

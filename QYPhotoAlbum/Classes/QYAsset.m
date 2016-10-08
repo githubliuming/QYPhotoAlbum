@@ -64,7 +64,7 @@
     [options setResizeMode:PHImageRequestOptionsResizeModeExact];
     [options setVersion:PHImageRequestOptionsVersionCurrent];
     options.networkAccessAllowed = NO;
-    options.synchronous = NO;
+    options.synchronous = YES;
     return options;
 }
 @end

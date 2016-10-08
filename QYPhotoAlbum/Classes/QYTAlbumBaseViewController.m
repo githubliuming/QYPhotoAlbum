@@ -8,7 +8,7 @@
 
 #import "QYTAlbumBaseViewController.h"
 
-@interface QYTAlbumBaseViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface QYTAlbumBaseViewController ()
 @property(nonatomic, strong) UITableView* tableView;
 
 @end
@@ -36,6 +36,7 @@
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.tableFooterView = [[UIView alloc] init];
     [self.view addSubview:self.tableView];
 }
 
@@ -43,12 +44,23 @@
 {
     return self.dataSource.count;
 }
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+//    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"123"];
+//    if (cell == nil) {
+//        
+//        
+//    }
+    
+    return nil;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (void)refreshTableView { [self.tableView reloadData]; }
 /*
 #pragma mark - Navigation
 
