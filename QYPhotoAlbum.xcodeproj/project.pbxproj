@@ -15,6 +15,7 @@
 		A09764001DA8D86600B6C6E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A09763FE1DA8D86600B6C6E7 /* LaunchScreen.storyboard */; };
 		A097640A1DA8DBD400B6C6E7 /* QYAlbumLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = A09764091DA8DBD400B6C6E7 /* QYAlbumLibrary.m */; };
 		A097640D1DA8EF5A00B6C6E7 /* QYAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = A097640C1DA8EF5A00B6C6E7 /* QYAsset.m */; };
+		A09764101DA8F54900B6C6E7 /* QYTAlbumBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A097640F1DA8F54900B6C6E7 /* QYTAlbumBaseViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,8 @@
 		A09764091DA8DBD400B6C6E7 /* QYAlbumLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYAlbumLibrary.m; sourceTree = "<group>"; };
 		A097640B1DA8EF5A00B6C6E7 /* QYAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYAsset.h; sourceTree = "<group>"; };
 		A097640C1DA8EF5A00B6C6E7 /* QYAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYAsset.m; sourceTree = "<group>"; };
+		A097640E1DA8F54900B6C6E7 /* QYTAlbumBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYTAlbumBaseViewController.h; sourceTree = "<group>"; };
+		A097640F1DA8F54900B6C6E7 /* QYTAlbumBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYTAlbumBaseViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +96,8 @@
 				A09764091DA8DBD400B6C6E7 /* QYAlbumLibrary.m */,
 				A097640B1DA8EF5A00B6C6E7 /* QYAsset.h */,
 				A097640C1DA8EF5A00B6C6E7 /* QYAsset.m */,
+				A097640E1DA8F54900B6C6E7 /* QYTAlbumBaseViewController.h */,
+				A097640F1DA8F54900B6C6E7 /* QYTAlbumBaseViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -169,6 +174,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A09764101DA8F54900B6C6E7 /* QYTAlbumBaseViewController.m in Sources */,
 				A097640D1DA8EF5A00B6C6E7 /* QYAsset.m in Sources */,
 				A09763F81DA8D86500B6C6E7 /* ViewController.m in Sources */,
 				A09763F51DA8D86500B6C6E7 /* AppDelegate.m in Sources */,
