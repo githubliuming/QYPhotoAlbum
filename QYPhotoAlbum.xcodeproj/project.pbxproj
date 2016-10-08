@@ -1,0 +1,339 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A09763F21DA8D86500B6C6E7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A09763F11DA8D86500B6C6E7 /* main.m */; };
+		A09763F51DA8D86500B6C6E7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A09763F41DA8D86500B6C6E7 /* AppDelegate.m */; };
+		A09763F81DA8D86500B6C6E7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A09763F71DA8D86500B6C6E7 /* ViewController.m */; };
+		A09763FB1DA8D86500B6C6E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A09763F91DA8D86500B6C6E7 /* Main.storyboard */; };
+		A09763FD1DA8D86600B6C6E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A09763FC1DA8D86600B6C6E7 /* Assets.xcassets */; };
+		A09764001DA8D86600B6C6E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A09763FE1DA8D86600B6C6E7 /* LaunchScreen.storyboard */; };
+		A097640A1DA8DBD400B6C6E7 /* QYAlbumLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = A09764091DA8DBD400B6C6E7 /* QYAlbumLibrary.m */; };
+		A097640D1DA8EF5A00B6C6E7 /* QYAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = A097640C1DA8EF5A00B6C6E7 /* QYAsset.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A09763ED1DA8D86500B6C6E7 /* QYPhotoAlbum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QYPhotoAlbum.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A09763F11DA8D86500B6C6E7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A09763F31DA8D86500B6C6E7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		A09763F41DA8D86500B6C6E7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		A09763F61DA8D86500B6C6E7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		A09763F71DA8D86500B6C6E7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		A09763FA1DA8D86500B6C6E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A09763FC1DA8D86600B6C6E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A09763FF1DA8D86600B6C6E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A09764011DA8D86600B6C6E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A09764081DA8DBD400B6C6E7 /* QYAlbumLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYAlbumLibrary.h; sourceTree = "<group>"; };
+		A09764091DA8DBD400B6C6E7 /* QYAlbumLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYAlbumLibrary.m; sourceTree = "<group>"; };
+		A097640B1DA8EF5A00B6C6E7 /* QYAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYAsset.h; sourceTree = "<group>"; };
+		A097640C1DA8EF5A00B6C6E7 /* QYAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYAsset.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A09763EA1DA8D86500B6C6E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A09763E41DA8D86500B6C6E7 = {
+			isa = PBXGroup;
+			children = (
+				A09763EF1DA8D86500B6C6E7 /* QYPhotoAlbum */,
+				A09763EE1DA8D86500B6C6E7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A09763EE1DA8D86500B6C6E7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A09763ED1DA8D86500B6C6E7 /* QYPhotoAlbum.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A09763EF1DA8D86500B6C6E7 /* QYPhotoAlbum */ = {
+			isa = PBXGroup;
+			children = (
+				A09764071DA8DA3500B6C6E7 /* Classes */,
+				A09763F31DA8D86500B6C6E7 /* AppDelegate.h */,
+				A09763F41DA8D86500B6C6E7 /* AppDelegate.m */,
+				A09763F61DA8D86500B6C6E7 /* ViewController.h */,
+				A09763F71DA8D86500B6C6E7 /* ViewController.m */,
+				A09763F91DA8D86500B6C6E7 /* Main.storyboard */,
+				A09763FC1DA8D86600B6C6E7 /* Assets.xcassets */,
+				A09763FE1DA8D86600B6C6E7 /* LaunchScreen.storyboard */,
+				A09764011DA8D86600B6C6E7 /* Info.plist */,
+				A09763F01DA8D86500B6C6E7 /* Supporting Files */,
+			);
+			path = QYPhotoAlbum;
+			sourceTree = "<group>";
+		};
+		A09763F01DA8D86500B6C6E7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A09763F11DA8D86500B6C6E7 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A09764071DA8DA3500B6C6E7 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A09764081DA8DBD400B6C6E7 /* QYAlbumLibrary.h */,
+				A09764091DA8DBD400B6C6E7 /* QYAlbumLibrary.m */,
+				A097640B1DA8EF5A00B6C6E7 /* QYAsset.h */,
+				A097640C1DA8EF5A00B6C6E7 /* QYAsset.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A09763EC1DA8D86500B6C6E7 /* QYPhotoAlbum */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A09764041DA8D86600B6C6E7 /* Build configuration list for PBXNativeTarget "QYPhotoAlbum" */;
+			buildPhases = (
+				A09763E91DA8D86500B6C6E7 /* Sources */,
+				A09763EA1DA8D86500B6C6E7 /* Frameworks */,
+				A09763EB1DA8D86500B6C6E7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QYPhotoAlbum;
+			productName = QYPhotoAlbum;
+			productReference = A09763ED1DA8D86500B6C6E7 /* QYPhotoAlbum.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A09763E51DA8D86500B6C6E7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = burning;
+				TargetAttributes = {
+					A09763EC1DA8D86500B6C6E7 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = WJYBVW342N;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = A09763E81DA8D86500B6C6E7 /* Build configuration list for PBXProject "QYPhotoAlbum" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A09763E41DA8D86500B6C6E7;
+			productRefGroup = A09763EE1DA8D86500B6C6E7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A09763EC1DA8D86500B6C6E7 /* QYPhotoAlbum */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A09763EB1DA8D86500B6C6E7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A09764001DA8D86600B6C6E7 /* LaunchScreen.storyboard in Resources */,
+				A09763FD1DA8D86600B6C6E7 /* Assets.xcassets in Resources */,
+				A09763FB1DA8D86500B6C6E7 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A09763E91DA8D86500B6C6E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A097640D1DA8EF5A00B6C6E7 /* QYAsset.m in Sources */,
+				A09763F81DA8D86500B6C6E7 /* ViewController.m in Sources */,
+				A09763F51DA8D86500B6C6E7 /* AppDelegate.m in Sources */,
+				A09763F21DA8D86500B6C6E7 /* main.m in Sources */,
+				A097640A1DA8DBD400B6C6E7 /* QYAlbumLibrary.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A09763F91DA8D86500B6C6E7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A09763FA1DA8D86500B6C6E7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A09763FE1DA8D86600B6C6E7 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A09763FF1DA8D86600B6C6E7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A09764021DA8D86600B6C6E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A09764031DA8D86600B6C6E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A09764051DA8D86600B6C6E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = WJYBVW342N;
+				INFOPLIST_FILE = QYPhotoAlbum/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.catchapp.cc.QYPhotoAlbum;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A09764061DA8D86600B6C6E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = WJYBVW342N;
+				INFOPLIST_FILE = QYPhotoAlbum/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.catchapp.cc.QYPhotoAlbum;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A09763E81DA8D86500B6C6E7 /* Build configuration list for PBXProject "QYPhotoAlbum" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A09764021DA8D86600B6C6E7 /* Debug */,
+				A09764031DA8D86600B6C6E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A09764041DA8D86600B6C6E7 /* Build configuration list for PBXNativeTarget "QYPhotoAlbum" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A09764051DA8D86600B6C6E7 /* Debug */,
+				A09764061DA8D86600B6C6E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A09763E51DA8D86500B6C6E7 /* Project object */;
+}
