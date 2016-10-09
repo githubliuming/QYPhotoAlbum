@@ -33,7 +33,7 @@
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     QYLivePhotoItem *cell =
-        [collectionView dequeueReusableCellWithReuseIdentifier:QYMutableCellIdentifier forIndexPath:indexPath];
+        [collectionView dequeueReusableCellWithReuseIdentifier:QYMutableCellOfLivePhotoIdentifier forIndexPath:indexPath];
     QYAsset *asset = [self.dataSource objectAtIndex:indexPath.row];
     UIImage *image = [asset getThumbImage];
     cell.contentView.layer.contents = (__bridge id _Nullable)(image.CGImage);
