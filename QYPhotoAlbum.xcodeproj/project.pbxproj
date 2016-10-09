@@ -17,6 +17,8 @@
 		A097640D1DA8EF5A00B6C6E7 /* QYAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = A097640C1DA8EF5A00B6C6E7 /* QYAsset.m */; };
 		A09764101DA8F54900B6C6E7 /* QYTAlbumBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A097640F1DA8F54900B6C6E7 /* QYTAlbumBaseViewController.m */; };
 		A09764131DA8F8C800B6C6E7 /* QYSeletedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A09764121DA8F8C800B6C6E7 /* QYSeletedViewController.m */; };
+		A0A6C1B81DA9ED8500886A44 /* QYBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A6C1B71DA9ED8500886A44 /* QYBaseCollectionViewCell.m */; };
+		A0A6C1BB1DA9EDBC00886A44 /* QYImageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A6C1BA1DA9EDBC00886A44 /* QYImageItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,10 @@
 		A097640F1DA8F54900B6C6E7 /* QYTAlbumBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYTAlbumBaseViewController.m; sourceTree = "<group>"; };
 		A09764111DA8F8C800B6C6E7 /* QYSeletedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYSeletedViewController.h; sourceTree = "<group>"; };
 		A09764121DA8F8C800B6C6E7 /* QYSeletedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYSeletedViewController.m; sourceTree = "<group>"; };
+		A0A6C1B61DA9ED8500886A44 /* QYBaseCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYBaseCollectionViewCell.h; sourceTree = "<group>"; };
+		A0A6C1B71DA9ED8500886A44 /* QYBaseCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYBaseCollectionViewCell.m; sourceTree = "<group>"; };
+		A0A6C1B91DA9EDBC00886A44 /* QYImageItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYImageItem.h; sourceTree = "<group>"; };
+		A0A6C1BA1DA9EDBC00886A44 /* QYImageItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYImageItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +109,10 @@
 				A097640F1DA8F54900B6C6E7 /* QYTAlbumBaseViewController.m */,
 				A09764111DA8F8C800B6C6E7 /* QYSeletedViewController.h */,
 				A09764121DA8F8C800B6C6E7 /* QYSeletedViewController.m */,
+				A0A6C1B61DA9ED8500886A44 /* QYBaseCollectionViewCell.h */,
+				A0A6C1B71DA9ED8500886A44 /* QYBaseCollectionViewCell.m */,
+				A0A6C1B91DA9EDBC00886A44 /* QYImageItem.h */,
+				A0A6C1BA1DA9EDBC00886A44 /* QYImageItem.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -180,8 +190,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A09764131DA8F8C800B6C6E7 /* QYSeletedViewController.m in Sources */,
+				A0A6C1B81DA9ED8500886A44 /* QYBaseCollectionViewCell.m in Sources */,
 				A09764101DA8F54900B6C6E7 /* QYTAlbumBaseViewController.m in Sources */,
 				A097640D1DA8EF5A00B6C6E7 /* QYAsset.m in Sources */,
+				A0A6C1BB1DA9EDBC00886A44 /* QYImageItem.m in Sources */,
 				A09763F81DA8D86500B6C6E7 /* ViewController.m in Sources */,
 				A09763F51DA8D86500B6C6E7 /* AppDelegate.m in Sources */,
 				A09763F21DA8D86500B6C6E7 /* main.m in Sources */,

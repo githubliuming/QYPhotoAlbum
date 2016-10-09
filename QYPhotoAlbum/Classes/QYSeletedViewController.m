@@ -9,10 +9,10 @@
 #import "QYSeletedViewController.h"
 #import "QYAsset.h"
 #import "QYAlbumLibrary.h"
-
+#import "QYImageItem.h"
 #define QYMutableCellIdentifier @"QYMutableCellIdentifier"
+#define maxSeletedNum 9
 @interface QYSeletedViewController ()
-
 @end
 
 @implementation QYSeletedViewController
@@ -22,7 +22,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    [self registerCell:QYMutableCellIdentifier withClass:[UICollectionViewCell class]];
+    [self registerCell:QYMutableCellIdentifier withClass:[QYImageItem class]];
     if ([QYAlbumLibrary allowAlbumPermisson])
     {
         [self requsetImages];
@@ -59,33 +59,44 @@
     self.dataSource = images;
     [self refreshTableView];
 }
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath { return 80; }
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:QYMutableCellIdentifier];
-//    if (cell == nil)
-//    {
-//        cell =
-//            [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-//            reuseIdentifier:QYMutableCellIdentifier];
-//    }
-//    QYAsset *asset = [self.dataSource objectAtIndex:indexPath.row];
-//    UIImage *image = [asset getThumbImage];
-//    cell.imageView.image = image;
-//    return cell;
-//}
-
-//- (CGFloat)
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell *cell =
+    QYImageItem *cell =
         [collectionView dequeueReusableCellWithReuseIdentifier:QYMutableCellIdentifier forIndexPath:indexPath];
     QYAsset *asset = [self.dataSource objectAtIndex:indexPath.row];
     UIImage *image = [asset getThumbImage];
     cell.contentView.layer.contents = (__bridge id _Nullable)(image.CGImage);
+    NSArray *sIndexPahts = [self.seletedDic allKeys];
+    cell.seletedImage = [sIndexPahts containsObject:indexPath];
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    // item 点击
+    QYImageItem *item = (QYImageItem *)[collectionView cellForItemAtIndexPath:indexPath];
+    NSArray *sIndexPahts = [self.seletedDic allKeys];
+    if ([sIndexPahts containsObject:indexPath])
+    {
+        [self.seletedDic removeObjectForKey:indexPath];
+        item.contentView.backgroundColor = [UIColor whiteColor];
+        item.seletedImage = NO;
+    }
+    else
+    {
+        if ([self checkMaxSeletedNum:maxSeletedNum])
+        {
+            item.seletedImage = YES;
+            QYAsset *asset = [self.dataSource objectAtIndex:indexPath.row];
+            [self.seletedDic setObject:asset forKey:indexPath];
+        }
+        else
+        {
+            [self showTipMsg:[NSString stringWithFormat:@"最多选择%d张图片", maxSeletedNum]];
+        }
+    }
 }
 - (void)didReceiveMemoryWarning
 {

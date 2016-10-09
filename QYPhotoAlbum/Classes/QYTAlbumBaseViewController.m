@@ -26,6 +26,15 @@
 
     return _dataSource;
 }
+- (NSMutableDictionary *)seletedDic
+{
+    if (_seletedDic == nil)
+    {
+        _seletedDic = [[NSMutableDictionary alloc] init];
+    }
+
+    return _seletedDic;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -41,6 +50,7 @@
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     self.collectionView.scrollEnabled = YES;
+    self.collectionView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.collectionView];
 }
 - (void)registerCell:(NSString *)identifier withClass:(Class)aclass
@@ -94,27 +104,23 @@
 {
     NSLog(@"---------------------");
 }
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-//{
-//    return self.dataSource.count;
-//}
-//
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    //    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"123"];
-//    //    if (cell == nil) {
-//    //
-//    //
-//    //    }
-//
-//    return nil;
-//}
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 - (void)refreshTableView { [self.tableView reloadData]; }
+- (BOOL)checkMaxSeletedNum:(int)num
+{
+    NSUInteger count = [[self.seletedDic allKeys] count];
+    return count < num;
+}
+- (void)showTipMsg:(NSString *)tipString
+{
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示"
+                                                                     message:tipString
+                                                              preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil];
+    [alertVC addAction:cancelAction];
+    [alertVC addAction:okAction];
+    [self presentViewController:alertVC animated:YES completion:NULL];
+}
 /*
 #pragma mark - Navigation
 
