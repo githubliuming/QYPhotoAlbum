@@ -49,17 +49,10 @@
     }];
 }
 
-- (void)enumerateResources:(PHAssetMediaType)mediaType finishBlock:(void (^)(NSMutableArray* resours))block
+- (void)enumerateResources:(PHFetchOptions*)options finishBlock:(void (^)(NSMutableArray* resours))block
 {
     //结果集合
     NSMutableArray* assetsResult = [[NSMutableArray alloc] init];
-
-    PHFetchOptions* options = [[PHFetchOptions alloc] init];
-    //筛选条件
-    options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", mediaType];
-    //排序条件
-    options.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO] ];
-    //开始筛选
     PHFetchResult<PHAssetCollection*>* result =
         [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
                                                  subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary
@@ -79,6 +72,52 @@
     }
 }
 
+- (void)getAllImageSource:(void (^)(NSMutableArray* resours))block
+{
+    PHFetchOptions* options = [self getNewOptions:PHAssetMediaTypeImage mediaSubtype:PHAssetMediaSubtypeNone];
+    [self enumerateResources:options finishBlock:block];
+}
+- (void)getAllVideoSource:(void (^)(NSMutableArray*))block
+{
+    PHFetchOptions* options = [self getNewOptions:PHAssetMediaTypeVideo mediaSubtype:PHAssetMediaSubtypeNone];
+    [self enumerateResources:options finishBlock:block];
+}
+- (void)getLivePhotoSource:(void (^)(NSMutableArray*))block
+{
+    // livePhoto 9.1以后才支持
+    double sysVersion = [[UIDevice currentDevice].systemVersion doubleValue];
+    if (sysVersion >= 9.1)
+    {
+        PHFetchOptions* options = [self getNewOptions:PHAssetMediaTypeImage mediaSubtype:PHAssetMediaSubtypePhotoLive];
+        [self enumerateResources:options finishBlock:block];
+    }
+    else
+    {
+        if (block)
+        {
+            NSMutableArray* results = [[NSMutableArray alloc] init];
+            block(results);
+        }
+    }
+}
+- (PHFetchOptions*)getNewOptions:(PHAssetMediaType)mediaType mediaSubtype:(PHAssetMediaSubtype)mediaSubtype
+{
+    PHFetchOptions* options = [[PHFetchOptions alloc] init];
+    //筛选条件
+    if (mediaSubtype != PHAssetMediaSubtypeNone)
+    {
+        options.predicate =
+            [NSPredicate predicateWithFormat:@"mediaType = %d and mediaSubtype == %d", mediaType, mediaSubtype];
+    }
+    else
+    {
+        options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d  ", mediaType];
+    }
+
+    //排序条件
+    options.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO] ];
+    return options;
+}
 - (PHFetchResult<PHAssetCollection*>*)getAllAlbumFetchResultWith:(PHAssetCollectionType)CollectionType
                                                          subtype:(PHAssetCollectionSubtype)subtype
 {

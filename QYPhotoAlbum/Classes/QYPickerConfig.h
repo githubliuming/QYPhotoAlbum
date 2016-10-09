@@ -10,6 +10,8 @@
 #define QYPickerConfig_h
 
 #define QYMutableCellIdentifier @"QYMutableCellIdentifier"
+#define QYMutableCellOfVideoIdentifier @"QYMutableCellOfVideoIdentifier"
+#define QYMutableCellOfLivePhotoIdentifier @"QYMutableCellOfLivePhotoIdentifier"
 #define QYPickerViewCellIdentifier @"QYPickerViewCellIdentifier"
 
 #define maxSeletedNum 9

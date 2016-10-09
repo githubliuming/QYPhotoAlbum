@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		A0544E571DAA3E8500E4A706 /* QYLivePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0544E561DAA3E8500E4A706 /* QYLivePhotoViewController.m */; };
 		A0544E5A1DAA3EAD00E4A706 /* QYLivePhotoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A0544E591DAA3EAD00E4A706 /* QYLivePhotoItem.m */; };
+		A0544E5D1DAA4CE000E4A706 /* QYVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0544E5C1DAA4CE000E4A706 /* QYVideoViewController.m */; };
+		A0544E601DAA4D7800E4A706 /* QYVideoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A0544E5F1DAA4D7800E4A706 /* QYVideoItem.m */; };
 		A09763F21DA8D86500B6C6E7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A09763F11DA8D86500B6C6E7 /* main.m */; };
 		A09763F51DA8D86500B6C6E7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A09763F41DA8D86500B6C6E7 /* AppDelegate.m */; };
 		A09763F81DA8D86500B6C6E7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A09763F71DA8D86500B6C6E7 /* ViewController.m */; };
@@ -30,6 +32,10 @@
 		A0544E561DAA3E8500E4A706 /* QYLivePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYLivePhotoViewController.m; sourceTree = "<group>"; };
 		A0544E581DAA3EAD00E4A706 /* QYLivePhotoItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYLivePhotoItem.h; sourceTree = "<group>"; };
 		A0544E591DAA3EAD00E4A706 /* QYLivePhotoItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYLivePhotoItem.m; sourceTree = "<group>"; };
+		A0544E5B1DAA4CE000E4A706 /* QYVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYVideoViewController.h; sourceTree = "<group>"; };
+		A0544E5C1DAA4CE000E4A706 /* QYVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYVideoViewController.m; sourceTree = "<group>"; };
+		A0544E5E1DAA4D7800E4A706 /* QYVideoItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYVideoItem.h; sourceTree = "<group>"; };
+		A0544E5F1DAA4D7800E4A706 /* QYVideoItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYVideoItem.m; sourceTree = "<group>"; };
 		A09763ED1DA8D86500B6C6E7 /* QYPhotoAlbum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QYPhotoAlbum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A09763F11DA8D86500B6C6E7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A09763F31DA8D86500B6C6E7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -124,12 +130,16 @@
 				A09764121DA8F8C800B6C6E7 /* QYSeletedViewController.m */,
 				A0544E551DAA3E8500E4A706 /* QYLivePhotoViewController.h */,
 				A0544E561DAA3E8500E4A706 /* QYLivePhotoViewController.m */,
+				A0544E5B1DAA4CE000E4A706 /* QYVideoViewController.h */,
+				A0544E5C1DAA4CE000E4A706 /* QYVideoViewController.m */,
 				A0A6C1B61DA9ED8500886A44 /* QYBaseCollectionViewCell.h */,
 				A0A6C1B71DA9ED8500886A44 /* QYBaseCollectionViewCell.m */,
 				A0A6C1B91DA9EDBC00886A44 /* QYImageItem.h */,
 				A0A6C1BA1DA9EDBC00886A44 /* QYImageItem.m */,
 				A0544E581DAA3EAD00E4A706 /* QYLivePhotoItem.h */,
 				A0544E591DAA3EAD00E4A706 /* QYLivePhotoItem.m */,
+				A0544E5E1DAA4D7800E4A706 /* QYVideoItem.h */,
+				A0544E5F1DAA4D7800E4A706 /* QYVideoItem.m */,
 				A0A6C1BC1DAA19D900886A44 /* QYPickerViewCotroller.h */,
 				A0A6C1BD1DAA19D900886A44 /* QYPickerViewCotroller.m */,
 				A0A6C1C01DAA1FF500886A44 /* QYGroupViewController.h */,
@@ -213,6 +223,7 @@
 			files = (
 				A09764131DA8F8C800B6C6E7 /* QYSeletedViewController.m in Sources */,
 				A0544E571DAA3E8500E4A706 /* QYLivePhotoViewController.m in Sources */,
+				A0544E5D1DAA4CE000E4A706 /* QYVideoViewController.m in Sources */,
 				A0A6C1C21DAA1FF500886A44 /* QYGroupViewController.m in Sources */,
 				A0A6C1B81DA9ED8500886A44 /* QYBaseCollectionViewCell.m in Sources */,
 				A09764101DA8F54900B6C6E7 /* QYAlbumBaseViewController.m in Sources */,
@@ -224,6 +235,7 @@
 				A0A6C1BE1DAA19D900886A44 /* QYPickerViewCotroller.m in Sources */,
 				A09763F21DA8D86500B6C6E7 /* main.m in Sources */,
 				A097640A1DA8DBD400B6C6E7 /* QYAlbumLibrary.m in Sources */,
+				A0544E601DAA4D7800E4A706 /* QYVideoItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

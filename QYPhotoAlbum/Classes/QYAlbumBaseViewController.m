@@ -8,9 +8,9 @@
 
 #import "QYAlbumBaseViewController.h"
 #import "QYPickerConfig.h"
-
+#import "QYBaseCollectionViewCell.h"
+#import "QYAsset.h"
 @interface QYAlbumBaseViewController ()
-@property(nonatomic, strong) UITableView *tableView;
 @property(nonnull, strong) UICollectionView *collectionView;
 @end
 
@@ -101,9 +101,30 @@
 #pragma mark 点击CollectionView触发事件
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"---------------------");
+    // item 点击
+    QYBaseCollectionViewCell *item = (QYBaseCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    NSArray *sIndexPahts = [self.seletedDic allKeys];
+    if ([sIndexPahts containsObject:indexPath])
+    {
+        [self.seletedDic removeObjectForKey:indexPath];
+        item.contentView.backgroundColor = [UIColor whiteColor];
+        item.seletedImage = NO;
+    }
+    else
+    {
+        if ([self checkMaxSeletedNum:maxSeletedNum])
+        {
+            item.seletedImage = YES;
+            QYAsset *asset = [self.dataSource objectAtIndex:indexPath.row];
+            [self.seletedDic setObject:asset forKey:indexPath];
+        }
+        else
+        {
+            [self showTipMsg:[NSString stringWithFormat:@"最多选择%d张图片", maxSeletedNum]];
+        }
+    }
 }
-- (void)refreshTableView { [self.tableView reloadData]; }
+- (void)refreshTableView { [self.collectionView reloadData]; }
 - (BOOL)checkMaxSeletedNum:(int)num
 {
     NSUInteger count = [[self.seletedDic allKeys] count];

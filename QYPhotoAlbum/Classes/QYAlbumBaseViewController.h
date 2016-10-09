@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "QYAlbumLibrary.h"
+#import "QYAsset.h"
+#import "QYPickerConfig.h"
 @interface QYAlbumBaseViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property(nonatomic, strong) NSMutableArray* dataSource;

@@ -10,7 +10,7 @@
 #import <Photos/Photos.h>
 @interface QYAlbumLibrary : NSObject
 
-+ (instancetype) sharedInstance;
++ (instancetype)sharedInstance;
 /**
  *  判断是否有访问系统权限
  *
@@ -30,12 +30,23 @@
  */
 + (PHAuthorizationStatus)albumPermissonStatues;
 /**
- *  获取相册中 mediaType 所有资源
+ *  获取相册中所有图片
  *
- *  @param mediaType 资源类型
- *  @param block     读取完毕的block
+ *  @param block 结果回掉
  */
-- (void)enumerateResources:(PHAssetMediaType)mediaType finishBlock:(void (^)(NSMutableArray* resours))block;
+- (void)getAllImageSource:(void (^)(NSMutableArray* resours))block;
+/**
+ *  获取相册中的所有视频
+ *
+ *  @param block 结果回掉
+ */
+- (void)getAllVideoSource:(void (^)(NSMutableArray* resours))block;
+/**
+ *  获取相册中所有的livePhoto
+ *
+ *  @param block 结果回掉
+ */
+- (void)getLivePhotoSource:(void (^)(NSMutableArray* resours))block;
 
 - (NSMutableArray*)getAllSmartAlbums;
 @end

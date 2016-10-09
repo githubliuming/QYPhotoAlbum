@@ -10,6 +10,8 @@
 #import "QYPickerConfig.h"
 #import "QYAlbumLibrary.h"
 #import "QYSeletedViewController.h"
+#import "QYLivePhotoViewController.h"
+#import "QYVideoViewController.h"
 @interface QYGroupViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property(nonatomic, strong) NSMutableArray *dataSource;
 @property(nonatomic, strong) UITableView *tableView;
@@ -42,7 +44,7 @@
     [rightBtn setTitle:@"取消" forState:UIControlStateNormal];
     [rightBtn setTitle:@"取消" forState:UIControlStateHighlighted];
     [rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-     [rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    [rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     [rightBtn addTarget:self action:@selector(cancelBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
     self.navigationItem.rightBarButtonItems = @[ item ];
@@ -81,6 +83,14 @@
     {
         [self openCameraImage];
     }
+    if (indexPath.row == 1)
+    {
+        [self openVideo];
+    }
+    if (indexPath.row == 2)
+    {
+        [self openLivePhoto];
+    }
 }
 - (void)cancelBtnClicked:(id)sender { [self dismissViewControllerAnimated:YES completion:NULL]; }
 - (void)openCameraImage
@@ -89,6 +99,16 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)openLivePhoto
+{
+    QYLivePhotoViewController *livePhotoVC = [[QYLivePhotoViewController alloc] init];
+    [self.navigationController pushViewController:livePhotoVC animated:YES];
+}
+- (void)openVideo
+{
+    QYVideoViewController *videoVC = [[QYVideoViewController alloc] init];
+    [self.navigationController pushViewController:videoVC animated:YES];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

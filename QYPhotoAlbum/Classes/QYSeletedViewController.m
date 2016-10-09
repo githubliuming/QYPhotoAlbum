@@ -7,10 +7,7 @@
 //
 
 #import "QYSeletedViewController.h"
-#import "QYAsset.h"
-#import "QYAlbumLibrary.h"
 #import "QYImageItem.h"
-#import "QYPickerConfig.h"
 @interface QYSeletedViewController ()
 @end
 
@@ -48,13 +45,11 @@
 
 - (void)requsetImages
 {
-    QYAlbumLibrary *library = [[QYAlbumLibrary alloc] init];
+    QYAlbumLibrary *library = [QYAlbumLibrary sharedInstance];
     __block NSMutableArray *images = nil;
-    [library enumerateResources:PHAssetMediaTypeImage
-                    finishBlock:^(NSMutableArray *resours) {
-                        images = resours;
-                    }];
-
+    [library getAllImageSource:^(NSMutableArray *resours) {
+        images = resours;
+    }];
     self.dataSource = images;
     [self refreshTableView];
 }
@@ -72,31 +67,6 @@
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    // item 点击
-    QYImageItem *item = (QYImageItem *)[collectionView cellForItemAtIndexPath:indexPath];
-    NSArray *sIndexPahts = [self.seletedDic allKeys];
-    if ([sIndexPahts containsObject:indexPath])
-    {
-        [self.seletedDic removeObjectForKey:indexPath];
-        item.contentView.backgroundColor = [UIColor whiteColor];
-        item.seletedImage = NO;
-    }
-    else
-    {
-        if ([self checkMaxSeletedNum:maxSeletedNum])
-        {
-            item.seletedImage = YES;
-            QYAsset *asset = [self.dataSource objectAtIndex:indexPath.row];
-            [self.seletedDic setObject:asset forKey:indexPath];
-        }
-        else
-        {
-            [self showTipMsg:[NSString stringWithFormat:@"最多选择%d张图片", maxSeletedNum]];
-        }
-    }
-}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
