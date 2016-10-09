@@ -8,14 +8,16 @@
 
 #import "QYTAlbumBaseViewController.h"
 
+#define colNum 4
+#define colMargin 2
 @interface QYTAlbumBaseViewController ()
-@property(nonatomic, strong) UITableView* tableView;
-
+@property(nonatomic, strong) UITableView *tableView;
+@property(nonnull, strong) UICollectionView *collectionView;
 @end
 
 @implementation QYTAlbumBaseViewController
 
-- (NSMutableArray*)dataSource
+- (NSMutableArray *)dataSource
 {
     if (_dataSource == nil)
     {
@@ -33,28 +35,80 @@
 
 - (void)initTable
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.tableFooterView = [[UIView alloc] init];
-    [self.view addSubview:self.tableView];
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    self.collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    self.collectionView.scrollEnabled = YES;
+    [self.view addSubview:self.collectionView];
 }
-
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
+- (void)registerCell:(NSString *)identifier withClass:(Class)aclass
+{
+    [self.collectionView registerClass:aclass forCellWithReuseIdentifier:identifier];
+}
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return self.dataSource.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-
-//    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"123"];
-//    if (cell == nil) {
-//        
-//        
-//    }
-    
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     return nil;
 }
+//设置每个item的尺寸
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    double sizeWidth = (SCREEN_WIDTH - (colNum - 1) * colMargin) / colNum;
+    return CGSizeMake(sizeWidth, sizeWidth);
+}
+//设置每个item的UIEdgeInsets
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout *)collectionViewLayout
+        insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(colMargin, 0, colMargin, 0);
+}
+
+//设置每个item水平间距
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                                      layout:(UICollectionViewLayout *)collectionViewLayout
+    minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return colMargin;
+}
+
+//设置每个item垂直间距
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                                 layout:(UICollectionViewLayout *)collectionViewLayout
+    minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return colMargin;
+}
+
+#pragma mark 点击CollectionView触发事件
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"---------------------");
+}
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//{
+//    return self.dataSource.count;
+//}
+//
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    //    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"123"];
+//    //    if (cell == nil) {
+//    //
+//    //
+//    //    }
+//
+//    return nil;
+//}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

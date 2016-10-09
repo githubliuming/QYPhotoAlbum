@@ -21,6 +21,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
+    [self registerCell:QYMutableCellIdentifier withClass:[UICollectionViewCell class]];
     if ([QYAlbumLibrary allowAlbumPermisson])
     {
         [self requsetImages];
@@ -57,18 +59,32 @@
     self.dataSource = images;
     [self refreshTableView];
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath { return 80; }
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath { return 80; }
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:QYMutableCellIdentifier];
+//    if (cell == nil)
+//    {
+//        cell =
+//            [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+//            reuseIdentifier:QYMutableCellIdentifier];
+//    }
+//    QYAsset *asset = [self.dataSource objectAtIndex:indexPath.row];
+//    UIImage *image = [asset getThumbImage];
+//    cell.imageView.image = image;
+//    return cell;
+//}
+
+//- (CGFloat)
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:QYMutableCellIdentifier];
-    if (cell == nil)
-    {
-        cell =
-            [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:QYMutableCellIdentifier];
-    }
+    UICollectionViewCell *cell =
+        [collectionView dequeueReusableCellWithReuseIdentifier:QYMutableCellIdentifier forIndexPath:indexPath];
     QYAsset *asset = [self.dataSource objectAtIndex:indexPath.row];
     UIImage *image = [asset getThumbImage];
-    cell.imageView.image = image;
+    cell.contentView.layer.contents = (__bridge id _Nullable)(image.CGImage);
     return cell;
 }
 - (void)didReceiveMemoryWarning

@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface QYTAlbumBaseViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+#define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
+#define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
+@interface QYTAlbumBaseViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property(nonatomic, strong) NSMutableArray* dataSource;
 
-- (void) refreshTableView;
+- (void)registerCell:(NSString*)identifier withClass:(Class)aclass;
+- (void)refreshTableView;
 @end
