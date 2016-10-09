@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "QYSeletedViewController.h"
+#import "QYPickerViewCotroller.h"
 @interface ViewController ()
 
 @end
@@ -22,8 +23,9 @@
 
 - (IBAction)openAlbum:(id)sender
 {
-    QYSeletedViewController* vc = [[QYSeletedViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    QYPickerViewCotroller* vc = [[QYPickerViewCotroller alloc] init];
+    //    [self.navigationController pushViewController:vc animated:YES];
+    [self presentViewController:vc animated:YES completion:NULL];
 }
 - (void)didReceiveMemoryWarning
 {

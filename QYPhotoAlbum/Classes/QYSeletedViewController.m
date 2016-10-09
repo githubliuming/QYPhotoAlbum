@@ -10,8 +10,7 @@
 #import "QYAsset.h"
 #import "QYAlbumLibrary.h"
 #import "QYImageItem.h"
-#define QYMutableCellIdentifier @"QYMutableCellIdentifier"
-#define maxSeletedNum 9
+#import "QYPickerConfig.h"
 @interface QYSeletedViewController ()
 @end
 
@@ -21,7 +20,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
+    [self initNav];
     [self registerCell:QYMutableCellIdentifier withClass:[QYImageItem class]];
     if ([QYAlbumLibrary allowAlbumPermisson])
     {

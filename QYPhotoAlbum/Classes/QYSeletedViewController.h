@@ -6,8 +6,8 @@
 //  Copyright © 2016年 burning. All rights reserved.
 //
 
-#import "QYTAlbumBaseViewController.h"
+#import "QYAlbumBaseViewController.h"
 
-@interface QYSeletedViewController : QYTAlbumBaseViewController
+@interface QYSeletedViewController : QYAlbumBaseViewController
 
 @end

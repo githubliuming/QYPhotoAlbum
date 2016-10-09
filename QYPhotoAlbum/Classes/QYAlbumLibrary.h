@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
 @interface QYAlbumLibrary : NSObject
+
++ (instancetype) sharedInstance;
 /**
  *  判断是否有访问系统权限
  *
@@ -34,4 +36,6 @@
  *  @param block     读取完毕的block
  */
 - (void)enumerateResources:(PHAssetMediaType)mediaType finishBlock:(void (^)(NSMutableArray* resours))block;
+
+- (NSMutableArray*)getAllSmartAlbums;
 @end

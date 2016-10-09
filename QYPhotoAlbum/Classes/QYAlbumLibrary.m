@@ -8,7 +8,23 @@
 
 #import "QYAlbumLibrary.h"
 #import "QYAsset.h"
+#import "QYPickerConfig.h"
 @implementation QYAlbumLibrary
+
++ (instancetype)sharedInstance
+{
+    static QYAlbumLibrary* lib = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+
+        if (lib == nil)
+        {
+            lib = [[QYAlbumLibrary alloc] init];
+        }
+    });
+
+    return lib;
+}
 
 - (instancetype)init
 {
@@ -61,5 +77,33 @@
     {
         block(assetsResult);
     }
+}
+
+- (PHFetchResult<PHAssetCollection*>*)getAllAlbumFetchResultWith:(PHAssetCollectionType)CollectionType
+                                                         subtype:(PHAssetCollectionSubtype)subtype
+{
+    PHFetchResult<PHAssetCollection*>* result =
+        [PHAssetCollection fetchAssetCollectionsWithType:CollectionType subtype:subtype options:nil];
+    return result;
+}
+- (NSMutableArray*)getAllSmartAlbums
+{
+    NSMutableArray* results = [[NSMutableArray alloc] init];
+
+    PHFetchResult<PHAssetCollection*>* albums =
+        [self getAllAlbumFetchResultWith:PHAssetCollectionTypeSmartAlbum
+                                 subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary];
+    for (NSInteger i = 0; i < albums.count; i++)
+    {
+        PHAssetCollection* collection = [albums objectAtIndex:i];
+        NSMutableDictionary* dic = [[NSMutableDictionary alloc] init];
+        if (collection.localizedTitle.length > 0)
+        {
+            [dic setObject:collection.localizedTitle forKey:QYGroupName];
+            [results addObject:dic];
+        }
+    }
+
+    return results;
 }
 @end

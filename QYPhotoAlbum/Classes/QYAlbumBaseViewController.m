@@ -6,16 +6,15 @@
 //  Copyright © 2016年 burning. All rights reserved.
 //
 
-#import "QYTAlbumBaseViewController.h"
+#import "QYAlbumBaseViewController.h"
+#import "QYPickerConfig.h"
 
-#define colNum 4
-#define colMargin 2
-@interface QYTAlbumBaseViewController ()
+@interface QYAlbumBaseViewController ()
 @property(nonatomic, strong) UITableView *tableView;
 @property(nonnull, strong) UICollectionView *collectionView;
 @end
 
-@implementation QYTAlbumBaseViewController
+@implementation QYAlbumBaseViewController
 
 - (NSMutableArray *)dataSource
 {
@@ -121,6 +120,20 @@
     [alertVC addAction:okAction];
     [self presentViewController:alertVC animated:YES completion:NULL];
 }
+- (void)initNav
+{
+    self.navigationItem.title = @"照片";
+    UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightBtn.frame = CGRectMake(0, 0, 60, 40);
+    [rightBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [rightBtn setTitle:@"取消" forState:UIControlStateHighlighted];
+    [rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [rightBtn setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    [rightBtn addTarget:self action:@selector(cancelBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
+    self.navigationItem.rightBarButtonItems = @[ item ];
+}
+- (void)cancelBtnClicked:(id)sender { [self dismissViewControllerAnimated:YES completion:NULL]; }
 /*
 #pragma mark - Navigation
 
