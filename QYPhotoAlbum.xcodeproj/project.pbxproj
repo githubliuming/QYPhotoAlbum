@@ -14,6 +14,10 @@
 		A09763FD1DA8D86600B6C6E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A09763FC1DA8D86600B6C6E7 /* Assets.xcassets */; };
 		A09764001DA8D86600B6C6E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A09763FE1DA8D86600B6C6E7 /* LaunchScreen.storyboard */; };
 		A097640A1DA8DBD400B6C6E7 /* QYAlbumLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = A09764091DA8DBD400B6C6E7 /* QYAlbumLibrary.m */; };
+		BE90E57E1F7F7CF60058D1BF /* QYPhotoService.m in Sources */ = {isa = PBXBuildFile; fileRef = BE90E57D1F7F7CF60058D1BF /* QYPhotoService.m */; };
+		BE90E5841F7F7D2D0058D1BF /* QYAssetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE90E5811F7F7D2D0058D1BF /* QYAssetModel.m */; };
+		BE90E5851F7F7D2D0058D1BF /* QYGroupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE90E5831F7F7D2D0058D1BF /* QYGroupModel.m */; };
+		BE90E5881F7F7D590058D1BF /* QYPhotoBrige.m in Sources */ = {isa = PBXBuildFile; fileRef = BE90E5871F7F7D590058D1BF /* QYPhotoBrige.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +33,15 @@
 		A09764011DA8D86600B6C6E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A09764081DA8DBD400B6C6E7 /* QYAlbumLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYAlbumLibrary.h; sourceTree = "<group>"; };
 		A09764091DA8DBD400B6C6E7 /* QYAlbumLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYAlbumLibrary.m; sourceTree = "<group>"; };
+		BE90E57C1F7F7CF60058D1BF /* QYPhotoService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYPhotoService.h; sourceTree = "<group>"; };
+		BE90E57D1F7F7CF60058D1BF /* QYPhotoService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYPhotoService.m; sourceTree = "<group>"; };
+		BE90E5801F7F7D2D0058D1BF /* QYAssetModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYAssetModel.h; sourceTree = "<group>"; };
+		BE90E5811F7F7D2D0058D1BF /* QYAssetModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYAssetModel.m; sourceTree = "<group>"; };
+		BE90E5821F7F7D2D0058D1BF /* QYGroupModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYGroupModel.h; sourceTree = "<group>"; };
+		BE90E5831F7F7D2D0058D1BF /* QYGroupModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYGroupModel.m; sourceTree = "<group>"; };
+		BE90E5861F7F7D590058D1BF /* QYPhotoBrige.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYPhotoBrige.h; sourceTree = "<group>"; };
+		BE90E5871F7F7D590058D1BF /* QYPhotoBrige.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYPhotoBrige.m; sourceTree = "<group>"; };
+		BE90E5891F7F94510058D1BF /* QYPhotoConstant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QYPhotoConstant.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,8 +101,33 @@
 			children = (
 				A09764081DA8DBD400B6C6E7 /* QYAlbumLibrary.h */,
 				A09764091DA8DBD400B6C6E7 /* QYAlbumLibrary.m */,
+				BE90E5751F7F7C9C0058D1BF /* QYPhotoCore */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		BE90E5751F7F7C9C0058D1BF /* QYPhotoCore */ = {
+			isa = PBXGroup;
+			children = (
+				BE90E57F1F7F7D090058D1BF /* Models */,
+				BE90E57C1F7F7CF60058D1BF /* QYPhotoService.h */,
+				BE90E57D1F7F7CF60058D1BF /* QYPhotoService.m */,
+				BE90E5861F7F7D590058D1BF /* QYPhotoBrige.h */,
+				BE90E5871F7F7D590058D1BF /* QYPhotoBrige.m */,
+				BE90E5891F7F94510058D1BF /* QYPhotoConstant.h */,
+			);
+			path = QYPhotoCore;
+			sourceTree = "<group>";
+		};
+		BE90E57F1F7F7D090058D1BF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BE90E5801F7F7D2D0058D1BF /* QYAssetModel.h */,
+				BE90E5811F7F7D2D0058D1BF /* QYAssetModel.m */,
+				BE90E5821F7F7D2D0058D1BF /* QYGroupModel.h */,
+				BE90E5831F7F7D2D0058D1BF /* QYGroupModel.m */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -164,9 +202,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE90E5841F7F7D2D0058D1BF /* QYAssetModel.m in Sources */,
+				BE90E5851F7F7D2D0058D1BF /* QYGroupModel.m in Sources */,
+				BE90E57E1F7F7CF60058D1BF /* QYPhotoService.m in Sources */,
 				A09763F81DA8D86500B6C6E7 /* ViewController.m in Sources */,
 				A09763F51DA8D86500B6C6E7 /* AppDelegate.m in Sources */,
 				A09763F21DA8D86500B6C6E7 /* main.m in Sources */,
+				BE90E5881F7F7D590058D1BF /* QYPhotoBrige.m in Sources */,
 				A097640A1DA8DBD400B6C6E7 /* QYAlbumLibrary.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
