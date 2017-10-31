@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Photos/Photos.h>
+#import "QYPhotoConstant.h"
 @interface QYAlbumLibrary : NSObject
 
 + (instancetype)sharedInstance;
@@ -28,7 +28,7 @@
  *
  *  @return 权限状态
  */
-+ (PHAuthorizationStatus)albumPermissonStatues;
++ (QYAuthorizationStatus)albumPermissonStatues;
 /**
  *  获取相册中所有图片
  *

@@ -12,7 +12,7 @@
 
 - (id)copyWithZone:(nullable NSZone *)zone{
 
-    QYGroupModel * groupModel = [[QYGroupModel alloc] init];
+    QYGroupModel * groupModel = [[self class] allocWithZone:zone];
     groupModel.title = self.title;
     groupModel.asstArray = [self.asstArray mutableCopy];
     groupModel.identifier =self.identifier;
@@ -21,7 +21,7 @@
 
 - (id)mutableCopyWithZone:(nullable NSZone *)zone{
 
-    QYGroupModel * groupModel = [[QYGroupModel alloc] init];
+    QYGroupModel * groupModel = [[[self class] alloc] init];
     groupModel.title = self.title;
     groupModel.asstArray = [self.asstArray mutableCopy];
     groupModel.identifier =self.identifier;

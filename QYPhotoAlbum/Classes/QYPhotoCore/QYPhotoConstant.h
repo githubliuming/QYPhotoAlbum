@@ -21,9 +21,27 @@ typedef NS_ENUM (NSInteger,QYPhotoLibarayAssertType){
 
 typedef NS_ENUM(NSInteger,QYPhotoAssetType){
 
-    QYPhotoAssertTypeUnknown,
-    QYPhotoAssetTypeImage,
-    QYPhotoAssetTypeVideo,
+    QYPhotoAssetTypeUnknown,            //位置类型
+    QYPhotoAssetTypeImage,              //图片
+    QYPhotoAssetTypeGif,                //gif
+    QYPhotoAssetTypeLiviePhoto,         //livePhoto
+    QYPhotoAssetTypeVideo,              //视频
+    QYPhotoAssetTypeVideoHighFrameRate,  //慢动作视频
+    QYPhotoAssetTypeAudio,               //音频
+    QYPhotoAssetTypeNetImage,
     
 } ;
+
+typedef NS_ENUM(NSInteger, QYAuthorizationStatus) {
+    QYAuthorizationStatusNotDetermined = 0, // 用户还没有关于这个应用程序做出了选择
+    QYAuthorizationStatusRestricted,        // 这个应用程序未被授权访问图片数据。用户不能更改该应用程序的状态,可能是由于活动的限制,如家长控制到位。
+    QYAuthorizationStatusDenied,            // 用户已经明确否认了这个应用程序访问图片数据
+    QYAuthorizationStatusAuthorized         // 用户授权此应用程序访问图片数据
+};
+
+
+typedef void (^fetchAlbumCompletion) (NSArray * _Nullable array);
+typedef void(^downloadProgressBlock)(double progress, NSError * _Nullable error);
+typedef void(^requestImageBlock)(UIImage * _Nullable image);
+typedef void(^requestVideoBlock)(NSURL * _Nullable url, NSError * _Nullable error);
 #endif /* QYPhotoConstant_h */

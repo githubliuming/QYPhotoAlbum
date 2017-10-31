@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A7D8E8B1FA852C90045F24E /* 8e6b5520bf718f894833b480acad68d9.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8A7D8E8A1FA852C90045F24E /* 8e6b5520bf718f894833b480acad68d9.gif */; };
+		8A7D8E8F1FA863820045F24E /* PHAsset+covertToMP4.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7D8E8E1FA863820045F24E /* PHAsset+covertToMP4.m */; };
 		A09763F21DA8D86500B6C6E7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A09763F11DA8D86500B6C6E7 /* main.m */; };
 		A09763F51DA8D86500B6C6E7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A09763F41DA8D86500B6C6E7 /* AppDelegate.m */; };
 		A09763F81DA8D86500B6C6E7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A09763F71DA8D86500B6C6E7 /* ViewController.m */; };
@@ -17,10 +19,12 @@
 		BE90E57E1F7F7CF60058D1BF /* QYPhotoService.m in Sources */ = {isa = PBXBuildFile; fileRef = BE90E57D1F7F7CF60058D1BF /* QYPhotoService.m */; };
 		BE90E5841F7F7D2D0058D1BF /* QYAssetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE90E5811F7F7D2D0058D1BF /* QYAssetModel.m */; };
 		BE90E5851F7F7D2D0058D1BF /* QYGroupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE90E5831F7F7D2D0058D1BF /* QYGroupModel.m */; };
-		BE90E5881F7F7D590058D1BF /* QYPhotoBrige.m in Sources */ = {isa = PBXBuildFile; fileRef = BE90E5871F7F7D590058D1BF /* QYPhotoBrige.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8A7D8E8A1FA852C90045F24E /* 8e6b5520bf718f894833b480acad68d9.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 8e6b5520bf718f894833b480acad68d9.gif; sourceTree = "<group>"; };
+		8A7D8E8D1FA863820045F24E /* PHAsset+covertToMP4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PHAsset+covertToMP4.h"; sourceTree = "<group>"; };
+		8A7D8E8E1FA863820045F24E /* PHAsset+covertToMP4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PHAsset+covertToMP4.m"; sourceTree = "<group>"; };
 		A09763ED1DA8D86500B6C6E7 /* QYPhotoAlbum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QYPhotoAlbum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A09763F11DA8D86500B6C6E7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A09763F31DA8D86500B6C6E7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -39,8 +43,6 @@
 		BE90E5811F7F7D2D0058D1BF /* QYAssetModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYAssetModel.m; sourceTree = "<group>"; };
 		BE90E5821F7F7D2D0058D1BF /* QYGroupModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYGroupModel.h; sourceTree = "<group>"; };
 		BE90E5831F7F7D2D0058D1BF /* QYGroupModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYGroupModel.m; sourceTree = "<group>"; };
-		BE90E5861F7F7D590058D1BF /* QYPhotoBrige.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYPhotoBrige.h; sourceTree = "<group>"; };
-		BE90E5871F7F7D590058D1BF /* QYPhotoBrige.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYPhotoBrige.m; sourceTree = "<group>"; };
 		BE90E5891F7F94510058D1BF /* QYPhotoConstant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QYPhotoConstant.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -55,6 +57,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8A7D8E8C1FA863760045F24E /* QYPhotoCategory */ = {
+			isa = PBXGroup;
+			children = (
+				8A7D8E8D1FA863820045F24E /* PHAsset+covertToMP4.h */,
+				8A7D8E8E1FA863820045F24E /* PHAsset+covertToMP4.m */,
+			);
+			path = QYPhotoCategory;
+			sourceTree = "<group>";
+		};
 		A09763E41DA8D86500B6C6E7 = {
 			isa = PBXGroup;
 			children = (
@@ -74,6 +85,7 @@
 		A09763EF1DA8D86500B6C6E7 /* QYPhotoAlbum */ = {
 			isa = PBXGroup;
 			children = (
+				8A7D8E8A1FA852C90045F24E /* 8e6b5520bf718f894833b480acad68d9.gif */,
 				A09764071DA8DA3500B6C6E7 /* Classes */,
 				A09763F31DA8D86500B6C6E7 /* AppDelegate.h */,
 				A09763F41DA8D86500B6C6E7 /* AppDelegate.m */,
@@ -109,11 +121,10 @@
 		BE90E5751F7F7C9C0058D1BF /* QYPhotoCore */ = {
 			isa = PBXGroup;
 			children = (
+				8A7D8E8C1FA863760045F24E /* QYPhotoCategory */,
 				BE90E57F1F7F7D090058D1BF /* Models */,
 				BE90E57C1F7F7CF60058D1BF /* QYPhotoService.h */,
 				BE90E57D1F7F7CF60058D1BF /* QYPhotoService.m */,
-				BE90E5861F7F7D590058D1BF /* QYPhotoBrige.h */,
-				BE90E5871F7F7D590058D1BF /* QYPhotoBrige.m */,
 				BE90E5891F7F94510058D1BF /* QYPhotoConstant.h */,
 			);
 			path = QYPhotoCore;
@@ -161,8 +172,8 @@
 				TargetAttributes = {
 					A09763EC1DA8D86500B6C6E7 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = WJYBVW342N;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = FJV2B9GPDW;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -189,6 +200,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A7D8E8B1FA852C90045F24E /* 8e6b5520bf718f894833b480acad68d9.gif in Resources */,
 				A09764001DA8D86600B6C6E7 /* LaunchScreen.storyboard in Resources */,
 				A09763FD1DA8D86600B6C6E7 /* Assets.xcassets in Resources */,
 				A09763FB1DA8D86500B6C6E7 /* Main.storyboard in Resources */,
@@ -204,11 +216,11 @@
 			files = (
 				BE90E5841F7F7D2D0058D1BF /* QYAssetModel.m in Sources */,
 				BE90E5851F7F7D2D0058D1BF /* QYGroupModel.m in Sources */,
+				8A7D8E8F1FA863820045F24E /* PHAsset+covertToMP4.m in Sources */,
 				BE90E57E1F7F7CF60058D1BF /* QYPhotoService.m in Sources */,
 				A09763F81DA8D86500B6C6E7 /* ViewController.m in Sources */,
 				A09763F51DA8D86500B6C6E7 /* AppDelegate.m in Sources */,
 				A09763F21DA8D86500B6C6E7 /* main.m in Sources */,
-				BE90E5881F7F7D590058D1BF /* QYPhotoBrige.m in Sources */,
 				A097640A1DA8DBD400B6C6E7 /* QYAlbumLibrary.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -329,11 +341,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = WJYBVW342N;
+				DEVELOPMENT_TEAM = FJV2B9GPDW;
 				INFOPLIST_FILE = QYPhotoAlbum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.catchapp.cc.QYPhotoAlbum;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yoyoshijie.philm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "f12912af-44b5-46af-9472-c1292b475220";
+				PROVISIONING_PROFILE_SPECIFIER = com.yoyoshijie.philm.beta;
 			};
 			name = Debug;
 		};
@@ -341,11 +355,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = WJYBVW342N;
+				DEVELOPMENT_TEAM = FJV2B9GPDW;
 				INFOPLIST_FILE = QYPhotoAlbum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.catchapp.cc.QYPhotoAlbum;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yoyoshijie.philm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "f12912af-44b5-46af-9472-c1292b475220";
+				PROVISIONING_PROFILE_SPECIFIER = com.yoyoshijie.philm.beta;
 			};
 			name = Release;
 		};
