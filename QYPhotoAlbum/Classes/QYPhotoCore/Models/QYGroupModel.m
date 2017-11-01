@@ -10,21 +10,24 @@
 #import "QYAssetModel.h"
 @implementation QYGroupModel
 
-- (id)copyWithZone:(nullable NSZone *)zone{
-
-    QYGroupModel * groupModel = [[self class] allocWithZone:zone];
+- (id)copyWithZone:(nullable NSZone *)zone
+{
+    QYGroupModel *groupModel = [[self class] allocWithZone:zone];
     groupModel.title = self.title;
     groupModel.asstArray = [self.asstArray mutableCopy];
-    groupModel.identifier =self.identifier;
+    groupModel.identifier = self.identifier;
+    groupModel.count = self.count;
+    groupModel.coverAsset = [self.coverAsset copy];
     return groupModel;
 }
-
-- (id)mutableCopyWithZone:(nullable NSZone *)zone{
-
-    QYGroupModel * groupModel = [[[self class] alloc] init];
+- (id)mutableCopyWithZone:(nullable NSZone *)zone
+{
+    QYGroupModel *groupModel = [[[self class] alloc] init];
     groupModel.title = self.title;
     groupModel.asstArray = [self.asstArray mutableCopy];
-    groupModel.identifier =self.identifier;
+    groupModel.identifier = self.identifier;
+    groupModel.count = self.count;
+    groupModel.coverAsset = [self.coverAsset copy];
     return groupModel;
 }
 @end
