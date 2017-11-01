@@ -9,24 +9,18 @@
 #import "QYPhotoService.h"
 #import "QYGroupModel.h"
 #import "QYAssetModel.h"
-#import "QYPhotoLibraryObserver.h"
+
+#define PHKitExists \
+    ([[[UIDevice currentDevice] systemVersion] compare:@"8.0" options:NSNumericSearch] != NSOrderedAscending)
+
 @interface QYPhotoService ()
 
 @property(nonatomic, strong) NSOperationQueue *photoLibrayQueue;
 
-@property(nonatomic, strong) QYPhotoLibraryObserver *libraryObserver;
 @end
 
 @implementation QYPhotoService
 
-- (QYPhotoLibraryObserver *)libraryObserver
-{
-    if (_libraryObserver == nil)
-    {
-        _libraryObserver = [[QYPhotoLibraryObserver alloc] init];
-    }
-    return _libraryObserver;
-}
 + (instancetype)shareInstanced
 {
     static QYPhotoService *photo_service_obj = nil;
@@ -41,9 +35,22 @@
     return photo_service_obj;
 }
 
-+ (BOOL)hasAlbumAuthor { return ([self albumPermissonStatues] == PHAuthorizationStatusAuthorized); }
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0
++ (BOOL)hasAlbumAuthor
+{
+    if (!PHKitExists)
+    {
+        return NO;
+    }
+    return ([self albumPermissonStatues] == PHAuthorizationStatusAuthorized);
+}
 + (void)requestAuthor:(void (^)(BOOL hasAuthor))block
 {
+    if (!PHKitExists)
+    {
+        block(NO);
+        return;
+    }
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
 
         QYAuthorizationStatus qy_status = [self tranformAuthorStatus:status];
@@ -55,6 +62,10 @@
 }
 + (QYAuthorizationStatus)albumPermissonStatues
 {
+    if (!PHKitExists)
+    {
+        return QYAuthorizationStatusDenied;
+    }
     PHAuthorizationStatus ph_authorStatus = [PHPhotoLibrary authorizationStatus];
     return [self tranformAuthorStatus:ph_authorStatus];
 }
@@ -105,6 +116,11 @@
 }
 - (void)fetchAllGroupsWithType:(QYPhotoLibarayAssertType)type completion:(fetchAlbumCompletion)completion
 {
+    if (!PHKitExists)
+    {
+        completion(@[]);
+        return;
+    }
     [self.photoLibrayQueue addOperationWithBlock:^{
 
         NSMutableArray *photoGroups = [[NSMutableArray alloc] init];
@@ -127,8 +143,7 @@
                 if (collection.localizedTitle.length > 0)
                 {
                     QYGroupModel *groupModel = [[QYGroupModel alloc] init];
-                    groupModel.title = collection.localizedTitle;
-                    groupModel.identifier = collection.localIdentifier;
+                    groupModel.collection = collection;
                     NSLog(@"%@", collection.localizedTitle);
                     groupModel.count = assetArray.count;
                     if (collection.assetCollectionType == PHAssetCollectionTypeSmartAlbum &&
@@ -148,7 +163,6 @@
                         [photoGroups addObject:groupModel];
                     }
                     groupModel.asstArray = [[NSMutableArray alloc] initWithArray:assetArray];
-                    groupModel.coverAsset = [[assetArray lastObject] copy];
                 }
             }];
         }
@@ -169,6 +183,10 @@
 
 - (void)fetchCameraRollAlbumListWithType:(QYPhotoLibarayAssertType)type completion:(fetchAlbumCompletion)completion
 {
+    if (!PHKitExists)
+    {
+        completion(@[]);
+    }
     [self.photoLibrayQueue addOperationWithBlock:^{
 
         PHFetchResult<PHAssetCollection *> *smartAlbums =
@@ -183,8 +201,8 @@
                 if (![obj isKindOfClass:[PHAssetCollection class]]) return;
 
                 QYGroupModel *groupModel = [[QYGroupModel alloc] init];
-                groupModel.title = obj.localizedTitle;
-                groupModel.identifier = obj.localIdentifier;
+
+                groupModel.collection = obj;
 
                 if (obj.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumUserLibrary)
                 {
@@ -193,7 +211,6 @@
                         NSArray *medias = [self fetchAssetWithCollection:obj withFetchType:type];
                         groupModel.asstArray = [[NSMutableArray alloc] initWithArray:medias];
                         groupModel.count = medias.count;
-                        groupModel.coverAsset = [[medias lastObject] copy];
                         [groups addObject:groupModel];
                     }
                 }
@@ -216,6 +233,10 @@
 
 - (NSArray *)fectchAssetWithCollection:(PHAssetCollection *)collection withOptions:(PHFetchOptions *)options
 {
+    if (!PHKitExists)
+    {
+        return @[];
+    }
     NSMutableArray *assetArray = [[NSMutableArray alloc] init];
     if (collection)
     {
@@ -241,6 +262,10 @@
 
 - (NSArray *)AllGroupAlbums
 {
+    if (!PHKitExists)
+    {
+        return @[];
+    }
     PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
                                                                           subtype:PHAssetCollectionSubtypeAny
                                                                           options:nil];
@@ -263,6 +288,10 @@
 
 - (PHFetchOptions *)getFetchOptionWithType:(QYPhotoLibarayAssertType)type
 {
+    if (!PHKitExists)
+    {
+        return nil;
+    }
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
     switch (type)
     {
@@ -326,10 +355,14 @@
 }
 #pragma mark - 获取照片
 
-- (PHImageRequestID)requestOriginalImageForAsset:(PHAsset *)asset
+- (PHImageRequestID)requestOriginalImageForAsset:(QYAssetModel *)asset
                                       completion:(requestImageBlock)completion
                                    progressBlock:(downloadProgressBlock)progressBlock
 {
+    if (!PHKitExists)
+    {
+        return -1;
+    }
     PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
     [options setDeliveryMode:PHImageRequestOptionsDeliveryModeHighQualityFormat];
     [options setResizeMode:PHImageRequestOptionsResizeModeExact];
@@ -346,7 +379,7 @@
         };
 
     return [[PHCachingImageManager defaultManager]
-        requestImageDataForAsset:asset
+        requestImageDataForAsset:asset.asset
                          options:options
                    resultHandler:^(NSData *_Nullable imageData, NSString *_Nullable dataUTI,
                                    UIImageOrientation orientation, NSDictionary *_Nullable info) {
@@ -404,11 +437,15 @@
 /**
  * @brief 根据传入size获取图片
  */
-- (PHImageRequestID)requestImageForAsset:(PHAsset *)asset
+- (PHImageRequestID)requestImageForAsset:(QYAssetModel *)asset
                                     size:(CGSize)size
                               completion:(requestImageBlock)completion
                            progressBlock:(downloadProgressBlock)progressBlock
 {
+    if (!PHKitExists)
+    {
+        return -1;
+    }
     PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
     option.resizeMode = PHImageRequestOptionsResizeModeFast;
     option.networkAccessAllowed = YES;
@@ -423,7 +460,7 @@
             }
         };
 
-    return [self requestImageForAsset:asset
+    return [self requestImageForAsset:asset.asset
                                  size:size
                            completion:^(UIImage *image, NSDictionary *info) {
 
@@ -468,6 +505,10 @@
                               resizeMode:(PHImageRequestOptionsResizeMode)resizeMode
                               completion:(void (^)(UIImage *, NSDictionary *))completion
 {
+    if (!PHKitExists)
+    {
+        return -1;
+    }
     PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
     /**
      resizeMode：对请求的图像怎样缩放。有三种选择：None，默认加载方式；Fast，尽快地提供接近或稍微大于要求的尺寸；Exact，精准提供要求的尺寸。
@@ -493,6 +534,10 @@
                                  options:(PHImageRequestOptions *)options
                               completion:(void (^)(UIImage *, NSDictionary *))completion
 {
+    if (!PHKitExists)
+    {
+        return -1;
+    }
     return [[PHCachingImageManager defaultManager]
         requestImageForAsset:asset
                   targetSize:size
@@ -510,10 +555,15 @@
                }];
 }
 #pragma mark - 导出视频
-- (PHImageRequestID)requestVideoWithAsset:(PHAsset *)asset
+- (PHImageRequestID)requestVideoWithAsset:(QYAssetModel *)asset
                                    finish:(requestVideoBlock)finishBlock
                                  progress:(downloadProgressBlock)progressHandler
 {
+    if (!PHKitExists)
+    {
+        return -1;
+    }
+
     PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
     options.networkAccessAllowed = YES;
     options.deliveryMode = PHVideoRequestOptionsDeliveryModeMediumQualityFormat;
@@ -529,7 +579,7 @@
                 }];
             };
     }
-    return [self requestVideoWithiAsset:asset
+    return [self requestVideoWithiAsset:asset.asset
                                 options:options
                                  finish:^(NSURL *videoPath, NSError *error) {
 
@@ -546,6 +596,10 @@
                                    options:(PHVideoRequestOptions *)options
                                     finish:(void (^)(NSURL *videoPath, NSError *error))finishBlock
 {
+    if (!PHKitExists)
+    {
+        return -1;
+    }
     __weak typeof(self) weakSelf = self;
     PHImageManager *imageManager = [PHImageManager defaultManager];
     PHImageRequestID requestId = [imageManager
@@ -580,7 +634,6 @@
                                                         (long long)[[NSDate date] timeIntervalSince1970]];
                          NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(
                              NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                         ;
                          NSString *myPathDocs = [documentsDirectory stringByAppendingPathComponent:fileName];
                          NSURL *url = [NSURL fileURLWithPath:myPathDocs];
 
@@ -601,9 +654,13 @@
 
 - (void)saveImageToAblum:(UIImage *)image
          customAlbumName:(NSString *)cAlbumName
-              completion:(void (^)(BOOL, PHAsset *))completion
+              completion:(void (^)(BOOL, QYAssetModel *))completion
 {
-    void (^block)(BOOL suc, PHAsset *asset) = ^(BOOL suc, PHAsset *asset) {
+    if (!PHKitExists)
+    {
+        return;
+    }
+    void (^block)(BOOL suc, QYAssetModel *asset) = ^(BOOL suc, QYAssetModel *asset) {
 
         if (completion)
         {
@@ -636,6 +693,7 @@
                     return;
                 }
                 PHAsset *asset = [self getAssetFromlocalIdentifier:placeholderAsset.localIdentifier];
+                QYAssetModel *model = [[QYAssetModel alloc] initWithAsset:asset];
                 if (cAlbumName != nil)
                 {
                     PHAssetCollection *desCollection = [self getDestinationCollectionWithName:cAlbumName];
@@ -646,33 +704,39 @@
                             addAssets:@[ asset ]];
                     }
                         completionHandler:^(BOOL success, NSError *_Nullable error) {
-                            block(success, asset);
+
+                            block(success, model);
                         }];
                 }
                 else
                 {
-                    block(success, asset);
+                    block(success, model);
                 }
             }];
     }
 }
 
-- (void)saveImageToAblum:(UIImage *)image completion:(void (^)(BOOL, PHAsset *))completion
+- (void)saveImageToAblum:(UIImage *)image completion:(void (^)(BOOL, QYAssetModel *))completion
 {
     [self saveImageToAblum:image customAlbumName:nil completion:completion];
 }
 
 - (void)saveVideoToAblum:(NSURL *)url
          customAlbumName:(NSString *)cAlbumName
-              completion:(void (^)(BOOL, PHAsset *))completion
+              completion:(void (^)(BOOL, QYAssetModel *))completion
 {
+    if (!PHKitExists)
+    {
+        return;
+    }
     void (^block)(BOOL suc, PHAsset *asset) = ^(BOOL suc, PHAsset *asset) {
 
         if (completion)
         {
             [self runMainThread:^{
 
-                completion(suc, asset);
+                QYAssetModel *assetModel = [[QYAssetModel alloc] initWithAsset:asset];
+                completion(suc, assetModel);
             }];
         }
     };
@@ -723,22 +787,27 @@
             }];
     }
 }
-- (void)saveVideoToAblum:(NSURL *)url completion:(void (^)(BOOL, PHAsset *))completion
+- (void)saveVideoToAblum:(NSURL *)url completion:(void (^)(BOOL, QYAssetModel *))completion
 {
     [self saveVideoToAblum:url customAlbumName:nil completion:completion];
 }
 
 - (void)saveImageToAlblm:(NSURL *)gifUrl
          customAlbumName:(NSString *)cAlbumName
-              completion:(void (^)(BOOL, PHAsset *))completion
+              completion:(void (^)(BOOL, QYAssetModel *))completion
 {
+    if (!PHKitExists)
+    {
+        return;
+    }
     void (^block)(BOOL suc, PHAsset *asset) = ^(BOOL suc, PHAsset *asset) {
 
         if (completion)
         {
             [self runMainThread:^{
 
-                completion(suc, asset);
+                QYAssetModel *assetModel = [[QYAssetModel alloc] initWithAsset:asset];
+                completion(suc, assetModel);
             }];
         }
     };
@@ -790,6 +859,10 @@
 
 - (PHAsset *)getAssetFromlocalIdentifier:(NSString *)localIdentifier
 {
+    if (!PHKitExists)
+    {
+        return nil;
+    }
     if (localIdentifier == nil)
     {
         NSLog(@"Cannot get asset from localID because it is nil");
@@ -806,7 +879,7 @@
 //获取自定义相册
 - (PHAssetCollection *)getDestinationCollectionWithName:(NSString *)collectionName
 {
-    if (collectionName == nil)
+    if (collectionName == nil || !PHKitExists)
     {
         return nil;
     }
@@ -842,6 +915,11 @@
         withCunstomAlubmName:(NSString *)albumName
                   completion:(deleteAssetCompletionBlock)completion
 {
+    if (!PHKitExists)
+    {
+        return;
+    }
+
     void (^block)(BOOL suc, NSError *error) = ^(BOOL suc, NSError *error) {
 
         if (completion)
@@ -892,7 +970,7 @@
     }
 }
 
-- (void)deleteMedaiWithAsset:(PHAsset *)asset completion:(deleteAssetCompletionBlock)completion
+- (void)deleteMedaiWithAsset:(QYAssetModel *)asset completion:(deleteAssetCompletionBlock)completion
 {
     [self deleteMedaiWithAsset:asset completion:completion];
 }
@@ -941,9 +1019,29 @@
 
 - (void)cancelRequestID:(PHImageRequestID)requestId
 {
+    if (!PHKitExists)
+    {
+        return;
+    }
     [[PHCachingImageManager defaultManager] cancelImageRequest:requestId];
 }
+
 #pragma mark - 注册/移除 PHLibrary Observer
-- (void)registerObserver { [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self.libraryObserver]; }
-- (void)removeRegisterObserver { [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self.libraryObserver]; }
+- (void)registerObserver:(id<PHPhotoLibraryChangeObserver>)observer
+{
+    if (!PHKitExists || observer == nil)
+    {
+        return;
+    }
+    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:observer];
+}
+- (void)removeRegisterObserver:(id<PHPhotoLibraryChangeObserver>)observer
+{
+    if (!PHKitExists || observer == nil)
+    {
+        return;
+    }
+    [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:observer];
+}
+#endif
 @end

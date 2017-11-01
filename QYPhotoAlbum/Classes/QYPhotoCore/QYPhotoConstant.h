@@ -8,7 +8,7 @@
 
 #ifndef QYPhotoConstant_h
 #define QYPhotoConstant_h
-
+@class UIImage;
 typedef NS_ENUM(NSInteger, QYPhotoLibarayAssertType) {
 
     QYPhotoLibarayAssertTypeAll,                 //相册所有元素
@@ -45,6 +45,5 @@ typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error
 typedef void (^deleteAssetCompletionBlock)(BOOL success, NSError* _Nullable error);
 
 #pragma mark - notificationName
-
 #define QYPhotoLibraryhasChangedNotification @"QYPhotoLibraryhasChangedNotification"
 #endif /* QYPhotoConstant_h */

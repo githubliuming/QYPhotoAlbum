@@ -7,12 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Photos/Photos.h>
 #import "QYPhotoConstant.h"
+#import "QYAssetModel.h"
+#import "QYGroupModel.h"
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0
+#import <Photos/Photos.h>
+#endif
 @interface QYPhotoService : NSObject
+
 + (instancetype)shareInstanced;
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0
 /**
  是否具有相册权限
 
@@ -36,7 +42,7 @@
 - (void)fetchAllGroupsWithcompletion:(fetchAlbumCompletion)completion;
 
 /**
-获取相册用户所有相册列表
+ 获取相册用户所有相册列表
 
  @param type 筛选type
  @param completion 完成回调
@@ -51,20 +57,20 @@
 - (void)fetchCameraRollAlbumListWithType:(QYPhotoLibarayAssertType)type completion:(fetchAlbumCompletion)completion;
 
 #pragma mark--图片获取接口
-- (PHImageRequestID)requestOriginalImageForAsset:(PHAsset *)asset
+- (PHImageRequestID)requestOriginalImageForAsset:(QYAssetModel *)asset
                                       completion:(requestImageBlock)completion
                                    progressBlock:(downloadProgressBlock)progressBlock;
 
 /**
  * @brief 根据传入size获取图片
  */
-- (PHImageRequestID)requestImageForAsset:(PHAsset *)asset
+- (PHImageRequestID)requestImageForAsset:(QYAssetModel *)asset
                                     size:(CGSize)size
                               completion:(requestImageBlock)completion
                            progressBlock:(downloadProgressBlock)progressBlock;
 
 #pragma 导出视频
-- (PHImageRequestID)requestVideoWithAsset:(PHAsset *)asset
+- (PHImageRequestID)requestVideoWithAsset:(QYAssetModel *)asset
                                    finish:(requestVideoBlock)finishBlock
                                  progress:(downloadProgressBlock)progressHandler;
 #pragma mark - 图片和视频的保存
@@ -78,7 +84,7 @@
  */
 - (void)saveImageToAlblm:(NSURL *)imageUrl
          customAlbumName:(NSString *)cAlbumName
-              completion:(void (^)(BOOL, PHAsset *))completion;
+              completion:(void (^)(BOOL, QYAssetModel *))completion;
 
 /**
  存入一张图片到系统相册
@@ -89,7 +95,7 @@
  */
 - (void)saveImageToAblum:(UIImage *)image
          customAlbumName:(NSString *)cAlbumName
-              completion:(void (^)(BOOL, PHAsset *))completion;
+              completion:(void (^)(BOOL, QYAssetModel *))completion;
 
 /**
  存入一张图片到相册
@@ -97,7 +103,7 @@
  @param image 图片对象
  @param completion 完成回调
  */
-- (void)saveImageToAblum:(UIImage *)image completion:(void (^)(BOOL, PHAsset *))completion;
+- (void)saveImageToAblum:(UIImage *)image completion:(void (^)(BOOL, QYAssetModel *))completion;
 
 /**
  保存视频到相册
@@ -108,7 +114,7 @@
  */
 - (void)saveVideoToAblum:(NSURL *)url
          customAlbumName:(NSString *)cAlbumName
-              completion:(void (^)(BOOL, PHAsset *))completion;
+              completion:(void (^)(BOOL, QYAssetModel *))completion;
 
 /**
  保存视频到相册
@@ -116,18 +122,21 @@
  @param url 视频路径
  @param completion 完成回调
  */
-- (void)saveVideoToAblum:(NSURL *)url completion:(void (^)(BOOL, PHAsset *))completion;
+- (void)saveVideoToAblum:(NSURL *)url completion:(void (^)(BOOL, QYAssetModel *))completion;
 
-- (void)deleteMedaiWithAsset:(PHAsset *)asset
+- (void)deleteMedaiWithAsset:(QYAssetModel *)asset
         withCunstomAlubmName:(NSString *)albumName
                   completion:(deleteAssetCompletionBlock)completion;
 
-- (void)deleteMedaiWithAsset:(PHAsset *)asset completion:(deleteAssetCompletionBlock)completion;
+- (void)deleteMedaiWithAsset:(QYAssetModel *)asset completion:(deleteAssetCompletionBlock)completion;
 
 #pragma mark -取消掉云端请求
 - (void)cancelRequestID:(PHImageRequestID)requestId;
 
 #pragma mark - 注册/移除 PHLibrary Observer
-- (void)registerObserver;
-- (void)removeRegisterObserver;
+- (void)registerObserver:(id<PHPhotoLibraryChangeObserver>)observer;
+
+- (void)removeRegisterObserver:(id<PHPhotoLibraryChangeObserver>)observer;
+
+#endif
 @end

@@ -16,7 +16,6 @@
 		8A55E27C1FA9687400BFE93A /* NXFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A55E27B1FA9687400BFE93A /* NXFileManager.m */; };
 		8A55E27F1FA96BAA00BFE93A /* QYPhotoListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A55E27E1FA96BAA00BFE93A /* QYPhotoListVC.m */; };
 		8A55E2821FA96C7600BFE93A /* PLSystemAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A55E2811FA96C7600BFE93A /* PLSystemAlbumCell.m */; };
-		8A55E2871FA99FFD00BFE93A /* QYPhotoLibraryObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A55E2861FA99FFD00BFE93A /* QYPhotoLibraryObserver.m */; };
 		8A55E28A1FA9AF6900BFE93A /* QYImagePreVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A55E2891FA9AF6900BFE93A /* QYImagePreVC.m */; };
 		8A7D8E8B1FA852C90045F24E /* 8e6b5520bf718f894833b480acad68d9.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8A7D8E8A1FA852C90045F24E /* 8e6b5520bf718f894833b480acad68d9.gif */; };
 		8A7D8E8F1FA863820045F24E /* PHAsset+covertToMP4.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7D8E8E1FA863820045F24E /* PHAsset+covertToMP4.m */; };
@@ -51,8 +50,6 @@
 		8A55E2811FA96C7600BFE93A /* PLSystemAlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLSystemAlbumCell.m; sourceTree = "<group>"; };
 		8A55E2831FA983FF00BFE93A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		8A55E2841FA983FF00BFE93A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		8A55E2851FA99FFD00BFE93A /* QYPhotoLibraryObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYPhotoLibraryObserver.h; sourceTree = "<group>"; };
-		8A55E2861FA99FFD00BFE93A /* QYPhotoLibraryObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYPhotoLibraryObserver.m; sourceTree = "<group>"; };
 		8A55E2881FA9AF6900BFE93A /* QYImagePreVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYImagePreVC.h; sourceTree = "<group>"; };
 		8A55E2891FA9AF6900BFE93A /* QYImagePreVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYImagePreVC.m; sourceTree = "<group>"; };
 		8A7D8E8A1FA852C90045F24E /* 8e6b5520bf718f894833b480acad68d9.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 8e6b5520bf718f894833b480acad68d9.gif; sourceTree = "<group>"; };
@@ -181,8 +178,6 @@
 				BE90E57F1F7F7D090058D1BF /* Models */,
 				BE90E57C1F7F7CF60058D1BF /* QYPhotoService.h */,
 				BE90E57D1F7F7CF60058D1BF /* QYPhotoService.m */,
-				8A55E2851FA99FFD00BFE93A /* QYPhotoLibraryObserver.h */,
-				8A55E2861FA99FFD00BFE93A /* QYPhotoLibraryObserver.m */,
 				BE90E5891F7F94510058D1BF /* QYPhotoConstant.h */,
 			);
 			path = QYPhotoCore;
@@ -289,7 +284,6 @@
 				A09763F21DA8D86500B6C6E7 /* main.m in Sources */,
 				8A55E26A1FA9632500BFE93A /* PLAlbumContensCell.m in Sources */,
 				8A55E27C1FA9687400BFE93A /* NXFileManager.m in Sources */,
-				8A55E2871FA99FFD00BFE93A /* QYPhotoLibraryObserver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -101,7 +101,7 @@
 
     QYGroupModel *groupModel = self.dataSource[indexPath.row];
     QYPhotoListVC *listVC = [[QYPhotoListVC alloc] init];
-    listVC.title = groupModel.title;
+    listVC.title = groupModel.collection.localizedTitle;
     listVC.dataSource = [groupModel.asstArray mutableCopy];
     [self.navigationController pushViewController:listVC animated:YES];
 }

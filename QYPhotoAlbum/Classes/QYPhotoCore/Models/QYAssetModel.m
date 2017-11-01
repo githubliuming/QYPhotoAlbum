@@ -12,7 +12,6 @@
 #import "PHAsset+covertToMP4.h"
 @interface QYAssetModel ()
 
-@property(nonatomic, strong) PHAsset *asset;
 @property(nonatomic, assign) PHImageRequestID requestID;
 @end
 @implementation QYAssetModel
@@ -24,13 +23,6 @@
     {
         self.asset = asset;
         self.medaiType = [self transformAssetType:_asset];
-        self.identifer = _asset.localIdentifier;
-        self.pixelWidth = _asset.pixelWidth;
-        self.pixelHeight = _asset.pixelHeight;
-        self.creationDate = _asset.creationDate;
-        self.modificationDate = _asset.modificationDate;
-        self.location = _asset.location;
-        self.duration = _asset.duration;
     }
     return self;
 }
@@ -71,76 +63,5 @@
 {
     QYAssetModel *assetModel = [[[self class] alloc] initWithAsset:_asset];
     return assetModel;
-}
-
-- (void)getOriginImage:(void (^)(UIImage *image))block progress:(downloadProgressBlock)progressBlock
-{
-    QYPhotoService *photoServices = [QYPhotoService shareInstanced];
-    self.requestID = [photoServices requestOriginalImageForAsset:_asset
-                                                      completion:^(UIImage *_Nullable image) {
-
-                                                          if (block)
-                                                          {
-                                                              block(image);
-                                                          }
-                                                      }
-                                                   progressBlock:progressBlock];
-}
-- (void)getThumbleImageWithSize:(CGSize)size complention:(void (^)(UIImage *image))completion
-{
-    void (^finishBlock)(UIImage *image) = ^(UIImage *image) {
-        if (completion)
-        {
-            completion(image);
-        }
-    };
-    __weak typeof(self) weakSelf = self;
-    QYPhotoService *service = [QYPhotoService shareInstanced];
-    self.requestID = [service requestImageForAsset:_asset
-        size:size
-        completion:^(UIImage *_Nullable image) {
-
-            __strong typeof(self) strongSelf = weakSelf;
-            if (strongSelf)
-            {
-                finishBlock(image);
-            }
-            else
-            {
-                NSLog(@" QYAssetModel is nil");
-            }
-        }
-        progressBlock:^(double progress, NSError *_Nullable error){
-
-        }];
-}
-- (void)getVideoUrl:(void (^)(NSURL *videoUrl))finishBlock progress:(downloadProgressBlock)progressBlock
-{
-    if (self.medaiType == QYPhotoAssetTypeLiviePhoto)
-    {
-        [self.asset getLivePhotoOfMP4Data:^(NSData *data, NSString *filePath, UIImage *coverImage) {
-
-            if (finishBlock)
-            {
-                finishBlock([NSURL fileURLWithPath:filePath]);
-            }
-        }];
-    }
-    else if (self.medaiType == QYPhotoAssetTypeVideo || self.medaiType == QYPhotoAssetTypeVideoHighFrameRate)
-    {
-        QYPhotoService *photoService = [QYPhotoService shareInstanced];
-        [photoService requestVideoWithAsset:self.asset
-                                     finish:^(NSURL *videoPath, NSError *error) {
-
-                                     }
-                                   progress:progressBlock];
-    }
-}
-- (void)cancelRequest
-{
-    if (self.requestID > 0)
-    {
-        [[QYPhotoService shareInstanced] cancelRequestID:self.requestID];
-    }
 }
 @end
