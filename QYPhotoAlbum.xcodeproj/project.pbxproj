@@ -19,6 +19,7 @@
 		8A55E28A1FA9AF6900BFE93A /* QYImagePreVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A55E2891FA9AF6900BFE93A /* QYImagePreVC.m */; };
 		8A7D8E8B1FA852C90045F24E /* 8e6b5520bf718f894833b480acad68d9.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8A7D8E8A1FA852C90045F24E /* 8e6b5520bf718f894833b480acad68d9.gif */; };
 		8A7D8E8F1FA863820045F24E /* PHAsset+covertToMP4.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7D8E8E1FA863820045F24E /* PHAsset+covertToMP4.m */; };
+		8AA27EDD1FAC674E0075DF0C /* militarytraning.png in Resources */ = {isa = PBXBuildFile; fileRef = 8AA27EDC1FAC674E0075DF0C /* militarytraning.png */; };
 		A09763F21DA8D86500B6C6E7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A09763F11DA8D86500B6C6E7 /* main.m */; };
 		A09763F51DA8D86500B6C6E7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A09763F41DA8D86500B6C6E7 /* AppDelegate.m */; };
 		A09763F81DA8D86500B6C6E7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A09763F71DA8D86500B6C6E7 /* ViewController.m */; };
@@ -55,6 +56,7 @@
 		8A7D8E8A1FA852C90045F24E /* 8e6b5520bf718f894833b480acad68d9.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 8e6b5520bf718f894833b480acad68d9.gif; sourceTree = "<group>"; };
 		8A7D8E8D1FA863820045F24E /* PHAsset+covertToMP4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PHAsset+covertToMP4.h"; sourceTree = "<group>"; };
 		8A7D8E8E1FA863820045F24E /* PHAsset+covertToMP4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PHAsset+covertToMP4.m"; sourceTree = "<group>"; };
+		8AA27EDC1FAC674E0075DF0C /* militarytraning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = militarytraning.png; sourceTree = "<group>"; };
 		A09763ED1DA8D86500B6C6E7 /* QYPhotoAlbum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QYPhotoAlbum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A09763F11DA8D86500B6C6E7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A09763F31DA8D86500B6C6E7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 		8A55E26B1FA965AB00BFE93A /* SDAutoLayout */ = {
 			isa = PBXGroup;
 			children = (
+				8AA27EDC1FAC674E0075DF0C /* militarytraning.png */,
 				8A55E26C1FA965AB00BFE93A /* SDAutoLayout.h */,
 				8A55E26D1FA965AB00BFE93A /* UITableView+SDAutoTableViewCellHeight.h */,
 				8A55E26E1FA965AB00BFE93A /* UITableView+SDAutoTableViewCellHeight.m */,
@@ -259,6 +262,7 @@
 				A09764001DA8D86600B6C6E7 /* LaunchScreen.storyboard in Resources */,
 				A09763FD1DA8D86600B6C6E7 /* Assets.xcassets in Resources */,
 				A09763FB1DA8D86500B6C6E7 /* Main.storyboard in Resources */,
+				8AA27EDD1FAC674E0075DF0C /* militarytraning.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,7 +356,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -395,7 +399,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -409,6 +413,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = FJV2B9GPDW;
 				INFOPLIST_FILE = QYPhotoAlbum/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yoyoshijie.philm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -423,6 +428,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = FJV2B9GPDW;
 				INFOPLIST_FILE = QYPhotoAlbum/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yoyoshijie.philm;
 				PRODUCT_NAME = "$(TARGET_NAME)";

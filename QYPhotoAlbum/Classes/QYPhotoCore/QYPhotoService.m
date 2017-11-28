@@ -7,11 +7,12 @@
 //
 
 #import "QYPhotoService.h"
-#import "QYGroupModel.h"
-#import "QYAssetModel.h"
 
+#import "PHAsset+covertToMP4.h"
 #define PHKitExists \
     ([[[UIDevice currentDevice] systemVersion] compare:@"8.0" options:NSNumericSearch] != NSOrderedAscending)
+
+typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error);
 
 @interface QYPhotoService ()
 
@@ -26,7 +27,7 @@
     static QYPhotoService *photo_service_obj = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-
+        
         if (photo_service_obj == nil)
         {
             photo_service_obj = [[QYPhotoService alloc] init];
@@ -34,8 +35,17 @@
     });
     return photo_service_obj;
 }
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.photoLibrayQueue = [[NSOperationQueue alloc] init];
+        self.photoLibrayQueue.maxConcurrentOperationCount = 5;
+    }
+    return self;
+}
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 + (BOOL)hasAlbumAuthor
 {
     if (!PHKitExists)
@@ -52,7 +62,7 @@
         return;
     }
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-
+        
         QYAuthorizationStatus qy_status = [self tranformAuthorStatus:status];
         if (block)
         {
@@ -79,40 +89,29 @@
         {
             authorStatus = QYAuthorizationStatusDenied;
         }
-        break;
+            break;
         case PHAuthorizationStatusAuthorized:
         {
             authorStatus = QYAuthorizationStatusAuthorized;
         }
-        break;
+            break;
         case PHAuthorizationStatusRestricted:
         {
             authorStatus = QYAuthorizationStatusRestricted;
         }
-        break;
+            break;
         case PHAuthorizationStatusNotDetermined:
         {
             authorStatus = QYAuthorizationStatusNotDetermined;
         }
-        break;
+            break;
         default:
         {
             authorStatus = QYAuthorizationStatusNotDetermined;
         }
-        break;
+            break;
     }
     return authorStatus;
-}
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        self.photoLibrayQueue = [[NSOperationQueue alloc] init];
-        self.photoLibrayQueue.maxConcurrentOperationCount = 5;
-    }
-    return self;
 }
 - (void)fetchAllGroupsWithType:(QYPhotoLibarayAssertType)type completion:(fetchAlbumCompletion)completion
 {
@@ -122,19 +121,19 @@
         return;
     }
     [self.photoLibrayQueue addOperationWithBlock:^{
-
+        
         NSMutableArray *photoGroups = [[NSMutableArray alloc] init];
         NSArray *allAlbums = [self AllGroupAlbums];
-
+        
         for (PHFetchResult *album in allAlbums)
         {
             [album enumerateObjectsUsingBlock:^(id _Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
-
+                
                 if (![obj isKindOfClass:[PHAssetCollection class]]) return;
                 PHAssetCollection *collection = (PHAssetCollection *)obj;
                 //过滤最近删除
                 if (collection.assetCollectionSubtype > 213) return;
-
+                
                 NSArray *assetArray = [self fetchAssetWithCollection:collection withFetchType:type];
                 if (assetArray.count <= 0)
                 {
@@ -166,11 +165,11 @@
                 }
             }];
         }
-
+        
         if (completion)
         {
             [self runMainThread:^{
-
+                
                 completion([[NSArray alloc] initWithArray:photoGroups]);
             }];
         }
@@ -188,38 +187,38 @@
         completion(@[]);
     }
     [self.photoLibrayQueue addOperationWithBlock:^{
-
+        
         PHFetchResult<PHAssetCollection *> *smartAlbums =
-            [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-                                                     subtype:PHAssetCollectionSubtypeAlbumRegular
-                                                     options:nil];
-
+        [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+                                                 subtype:PHAssetCollectionSubtypeAlbumRegular
+                                                 options:nil];
+        
         NSMutableArray *groups = [[NSMutableArray alloc] init];
         [smartAlbums
-            enumerateObjectsUsingBlock:^(PHAssetCollection *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
-
-                if (![obj isKindOfClass:[PHAssetCollection class]]) return;
-
-                QYGroupModel *groupModel = [[QYGroupModel alloc] init];
-
-                groupModel.collection = obj;
-
-                if (obj.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumUserLibrary)
-                {
-                    if (obj.localizedTitle.length > 0)
-                    {
-                        NSArray *medias = [self fetchAssetWithCollection:obj withFetchType:type];
-                        groupModel.asstArray = [[NSMutableArray alloc] initWithArray:medias];
-                        groupModel.count = medias.count;
-                        [groups addObject:groupModel];
-                    }
-                }
-            }];
-
+         enumerateObjectsUsingBlock:^(PHAssetCollection *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
+             
+             if (![obj isKindOfClass:[PHAssetCollection class]]) return;
+             
+             QYGroupModel *groupModel = [[QYGroupModel alloc] init];
+             
+             groupModel.collection = obj;
+             
+             if (obj.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumUserLibrary)
+             {
+                 if (obj.localizedTitle.length > 0)
+                 {
+                     NSArray *medias = [self fetchAssetWithCollection:obj withFetchType:type];
+                     groupModel.asstArray = [[NSMutableArray alloc] initWithArray:medias];
+                     groupModel.count = medias.count;
+                     [groups addObject:groupModel];
+                 }
+             }
+         }];
+        
         if (completion)
         {
             [self runMainThread:^{
-
+                
                 completion(groups);
             }];
         }
@@ -244,7 +243,7 @@
         if (result.count > 0)
         {
             [result enumerateObjectsUsingBlock:^(PHAsset *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
-
+                
                 if ([obj isKindOfClass:[PHAsset class]])
                 {
                     if (obj.mediaType == PHAssetMediaTypeUnknown)
@@ -271,15 +270,15 @@
                                                                           options:nil];
     // 我的照片流 1.6.10重新加入..
     PHFetchResult *myPhotoStreamAlbum =
-        [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
-                                                 subtype:PHAssetCollectionSubtypeAlbumMyPhotoStream
-                                                 options:nil];
-
+    [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                             subtype:PHAssetCollectionSubtypeAlbumMyPhotoStream
+                                             options:nil];
+    
     //用户导入的相册
     PHFetchResult *facesAlbums =
-        [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
-                                                 subtype:PHAssetCollectionSubtypeAlbumSyncedAlbum
-                                                 options:nil];
+    [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                             subtype:PHAssetCollectionSubtypeAlbumSyncedAlbum
+                                             options:nil];
     //用户自定义相册
     PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];
     NSArray *allAlbums = @[ smartAlbums, myPhotoStreamAlbum, topLevelUserCollections, facesAlbums ];
@@ -298,56 +297,51 @@
         case QYPhotoLibarayAssertTypeAll:
         {
             options.predicate = [NSPredicate
-                predicateWithFormat:@"mediaType = %d or mediaType = %d", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
+                                 predicateWithFormat:@"mediaType = %d or mediaType = %d", PHAssetMediaTypeImage, PHAssetMediaTypeVideo];
         }
-        break;
+            break;
         case QYPhotoLibarayAssertTypePhotos:
         {
             options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", PHAssetMediaTypeImage];
         }
-        break;
+            break;
         case QYPhotoLibarayAssertTypeVideo:
         {
             options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", PHAssetMediaTypeVideo];
         }
-        break;
+            break;
         case QYPhotoLibarayAssertTypePanoramas:
         {
             options.predicate =
-                [NSPredicate predicateWithFormat:@"mediaType = %d and mediaSubtype == %d", PHAssetMediaTypeImage,
-                                                 PHAssetMediaSubtypePhotoPanorama];
+            [NSPredicate predicateWithFormat:@"mediaType = %d and mediaSubtype == %d", PHAssetMediaTypeImage,
+             PHAssetMediaSubtypePhotoPanorama];
         }
-        break;
+            break;
         case QYPhotoLibarayAssertTypeLivePhoto:
         {
-            double sysVersion = [[UIDevice currentDevice].systemVersion doubleValue];
-            if (sysVersion >= 9.1f)
-            {
+            if (@available(iOS 9.1, *)) {
                 options.predicate =
-                    [NSPredicate predicateWithFormat:@"mediaType = %d and mediaSubtype == %d", PHAssetMediaTypeImage,
-                                                     PHAssetMediaSubtypePhotoLive];
-            }
-            else
-            {
+                [NSPredicate predicateWithFormat:@"mediaType = %d and mediaSubtype == %d", PHAssetMediaTypeImage,
+                 PHAssetMediaSubtypePhotoLive];
+            } else {
+                // Fallback on earlier versions
                 options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", PHAssetMediaTypeImage];
             }
+            
         }
-        break;
+            break;
         case QYPhotoLibarayAssertTypeLivePhotoAndVideos:
         {
-            double sysVersion = [[UIDevice currentDevice].systemVersion doubleValue];
-            if (sysVersion >= 9.1f)
-            {
+            if (@available(iOS 9.1, *)) {
                 options.predicate =
-                    [NSPredicate predicateWithFormat:@"mediaType = %d and mediaSubtype == %d", PHAssetMediaTypeImage,
-                                                     PHAssetMediaSubtypePhotoLive];
-            }
-            else
-            {
+                [NSPredicate predicateWithFormat:@"mediaType = %d and mediaSubtype == %d", PHAssetMediaTypeImage,
+                 PHAssetMediaSubtypePhotoLive];
+            } else {
+                // Fallback on earlier versions
                 options.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d", PHAssetMediaTypeImage];
             }
         }
-        break;
+            break;
         default:
             break;
     }
@@ -356,8 +350,23 @@
 #pragma mark - 获取照片
 
 - (PHImageRequestID)requestOriginalImageForAsset:(QYAssetModel *)asset
-                                      completion:(requestImageBlock)completion
-                                   progressBlock:(downloadProgressBlock)progressBlock
+success:(requestImagSuccessBlock)success
+failure:(requestFailBlock)failure
+progressBlock:(downloadProgressBlock)progressBlock{
+    
+    return [self requestOriginalImageForAsset:asset completion:^(UIImage * _Nullable image)
+            {
+                [self nx_handlerRequestImage:image success:success failure:failure];
+                
+            } progressBlock:^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
+                
+                [self nx_handlerRequestImageProgress:progress error:error progressBlock:progressBlock failure:failure];
+            }];
+}
+
+- (PHImageRequestID)requestOriginalImageForAsset:(QYAssetModel *)asset
+completion:(requestImagSuccessBlock)completion
+progressBlock:(PHAssetImageProgressHandler)progressBlock
 {
     if (!PHKitExists)
     {
@@ -368,79 +377,94 @@
     [options setResizeMode:PHImageRequestOptionsResizeModeExact];
     options.networkAccessAllowed = YES;
     options.progressHandler =
-        ^(double progress, NSError *_Nullable error, BOOL *_Nonnull stop, NSDictionary *_Nullable info) {
-
-            if (progressBlock)
-            {
-                [self runMainThread:^{
-                    progressBlock(progress, error);
-                }];
-            }
-        };
-
+    ^(double progress, NSError *_Nullable error, BOOL *_Nonnull stop, NSDictionary *_Nullable info) {
+        
+        if (progressBlock)
+        {
+            [self runMainThread:^{
+                progressBlock(progress, error,stop,info);
+            }];
+        }
+    };
+    
     return [[PHCachingImageManager defaultManager]
-        requestImageDataForAsset:asset.asset
-                         options:options
-                   resultHandler:^(NSData *_Nullable imageData, NSString *_Nullable dataUTI,
-                                   UIImageOrientation orientation, NSDictionary *_Nullable info) {
-
-                       BOOL downloadFinined = ![[info objectForKey:PHImageCancelledKey] boolValue] &&
-                                              ![info objectForKey:PHImageErrorKey] &&
-                                              ![[info objectForKey:PHImageResultIsDegradedKey] boolValue];
-
-                       if (downloadFinined)
-                       {
-                           if (completion)
-                           {
-                               [self runMainThread:^{
-
-                                   completion([UIImage imageWithData:imageData]);
-                               }];
-                           }
-                       }
-                       else
-                       {
-                           if ([[info objectForKey:PHImageCancelledKey] boolValue])
-                           {
-                               // PHImageCancelledKey 对应的值为真时代表用户手动取消云端下载
-                               NSLog(@"PHImageCancelledKey 对应的值为真时代表用户手动取消云端下载");
-                               return;
-                           }
-                           if (![[info objectForKey:PHImageResultIsDegradedKey] boolValue])
-                           {
-                               if ([info[PHImageResultIsInCloudKey] integerValue] == 1)
-                               {
-                                   //下载失败
-                                   if (completion)
-                                   {
-                                       [self runMainThread:^{
-                                           completion(nil);
-
-                                       }];
-                                   }
-                               }
-                               else
-                               {
-                                   if (completion)
-                                   {
-                                       [self runMainThread:^{
-
-                                           completion([UIImage imageWithData:imageData]);
-                                       }];
-                                   }
-                               }
-                           }
-                       }
-                   }];
+            requestImageDataForAsset:asset.asset
+            options:options
+            resultHandler:^(NSData *_Nullable imageData, NSString *_Nullable dataUTI,
+                            UIImageOrientation orientation, NSDictionary *_Nullable info) {
+                
+                BOOL downloadFinined = ![[info objectForKey:PHImageCancelledKey] boolValue] &&
+                ![info objectForKey:PHImageErrorKey] &&
+                ![[info objectForKey:PHImageResultIsDegradedKey] boolValue];
+                
+                if (downloadFinined)
+                {
+                    if (completion)
+                    {
+                        [self runMainThread:^{
+                            
+                            completion([UIImage imageWithData:imageData]);
+                        }];
+                    }
+                }
+                else
+                {
+                    if ([[info objectForKey:PHImageCancelledKey] boolValue])
+                    {
+                        // PHImageCancelledKey 对应的值为真时代表用户手动取消云端下载
+                        NSLog(@"PHImageCancelledKey 对应的值为真时代表用户手动取消云端下载");
+                        return;
+                    }
+                    if (![[info objectForKey:PHImageResultIsDegradedKey] boolValue])
+                    {
+                        if ([info[PHImageResultIsInCloudKey] integerValue] == 1)
+                        {
+                            //下载失败
+                            if (completion)
+                            {
+                                [self runMainThread:^{
+                                    completion(nil);
+                                    
+                                }];
+                            }
+                        }
+                        else
+                        {
+                            if (completion)
+                            {
+                                [self runMainThread:^{
+                                    
+                                    completion([UIImage imageWithData:imageData]);
+                                }];
+                            }
+                        }
+                    }
+                }
+            }];
 }
 
+- (PHImageRequestID)requestImageForAsset:(QYAssetModel *)asset
+size:(CGSize)size
+success:(requestImagSuccessBlock)success
+failure:(requestFailBlock)failure
+progressBlock:(downloadProgressBlock)progressBlock{
+    
+    return [self requestImageForAsset:asset size:size completion:^(UIImage * _Nullable image) {
+        
+        [self nx_handlerRequestImage:image success:success failure:failure];
+        
+    } progressBlock:^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
+        
+        [self nx_handlerRequestImageProgress:progress error:error progressBlock:progressBlock failure:failure];
+    }];
+}
 /**
  * @brief 根据传入size获取图片
  */
 - (PHImageRequestID)requestImageForAsset:(QYAssetModel *)asset
-                                    size:(CGSize)size
-                              completion:(requestImageBlock)completion
-                           progressBlock:(downloadProgressBlock)progressBlock
+size:(CGSize)size
+completion:(requestImagSuccessBlock)completion
+progressBlock:(PHAssetImageProgressHandler)progressBlock
 {
     if (!PHKitExists)
     {
@@ -450,39 +474,39 @@
     option.resizeMode = PHImageRequestOptionsResizeModeFast;
     option.networkAccessAllowed = YES;
     option.progressHandler =
-        ^(double progress, NSError *_Nullable error, BOOL *_Nonnull stop, NSDictionary *_Nullable info) {
-            if (progressBlock)
-            {
-                [self runMainThread:^{
-
-                    progressBlock(progress, error);
-                }];
-            }
-        };
-
+    ^(double progress, NSError *_Nullable error, BOOL *_Nonnull stop, NSDictionary *_Nullable info) {
+        if (progressBlock)
+        {
+            [self runMainThread:^{
+                
+                progressBlock(progress, error,stop,info);
+            }];
+        }
+    };
+    
     return [self requestImageForAsset:asset.asset
                                  size:size
                            completion:^(UIImage *image, NSDictionary *info) {
-
+                               
                                BOOL downloadFinined = ![[info objectForKey:PHImageCancelledKey] boolValue] &&
-                                                      ![info objectForKey:PHImageErrorKey];
+                               ![info objectForKey:PHImageErrorKey];
                                //不要该判断，即如果该图片在iCloud上时候，会先显示一张模糊的预览图，待加载完毕后会显示高清图
                                // && ![[info objectForKey:PHImageResultIsDegradedKey] boolValue]
                                if (downloadFinined && completion)
                                {
                                    [self runMainThread:^{
-
+                                       
                                        completion(image);
                                    }];
                                }
-
+                               
                            }];
 }
 /**
  * @brief 获取原图
  */
 - (PHImageRequestID)requestOriginalImageForAsset:(PHAsset *)asset
-                                      completion:(void (^)(UIImage *, NSDictionary *))completion
+completion:(void (^)(UIImage *, NSDictionary *))completion
 {
     return [self requestImageForAsset:asset
                                  size:CGSizeMake(asset.pixelWidth, asset.pixelHeight)
@@ -491,8 +515,8 @@
 }
 
 - (PHImageRequestID)requestImageForAsset:(PHAsset *)asset
-                                    size:(CGSize)size
-                              completion:(void (^)(UIImage *, NSDictionary *))completion
+size:(CGSize)size
+completion:(void (^)(UIImage *, NSDictionary *))completion
 {
     return [self requestImageForAsset:asset
                                  size:size
@@ -501,9 +525,9 @@
 }
 
 - (PHImageRequestID)requestImageForAsset:(PHAsset *)asset
-                                    size:(CGSize)size
-                              resizeMode:(PHImageRequestOptionsResizeMode)resizeMode
-                              completion:(void (^)(UIImage *, NSDictionary *))completion
+size:(CGSize)size
+resizeMode:(PHImageRequestOptionsResizeMode)resizeMode
+completion:(void (^)(UIImage *, NSDictionary *))completion
 {
     if (!PHKitExists)
     {
@@ -518,7 +542,7 @@
     option.resizeMode = resizeMode;  //控制照片尺寸
     //    option.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;//控制照片质量
     option.networkAccessAllowed = YES;
-
+    
     /*
      info字典提供请求状态信息:
      PHImageResultIsInCloudKey：图像是否必须从iCloud请求
@@ -530,40 +554,56 @@
 }
 
 - (PHImageRequestID)requestImageForAsset:(PHAsset *)asset
-                                    size:(CGSize)size
-                                 options:(PHImageRequestOptions *)options
-                              completion:(void (^)(UIImage *, NSDictionary *))completion
+size:(CGSize)size
+options:(PHImageRequestOptions *)options
+completion:(void (^)(UIImage *, NSDictionary *))completion
 {
     if (!PHKitExists)
     {
         return -1;
     }
     return [[PHCachingImageManager defaultManager]
-        requestImageForAsset:asset
-                  targetSize:size
-                 contentMode:PHImageContentModeAspectFill
-                     options:options
-               resultHandler:^(UIImage *_Nullable image, NSDictionary *_Nullable info) {
-                   BOOL downloadFinined =
-                       ![[info objectForKey:PHImageCancelledKey] boolValue] && ![info objectForKey:PHImageErrorKey];
-                   //不要该判断，即如果该图片在iCloud上时候，会先显示一张模糊的预览图，待加载完毕后会显示高清图
-                   // && ![[info objectForKey:PHImageResultIsDegradedKey] boolValue]
-                   if (downloadFinined && completion)
-                   {
-                       completion(image, info);
-                   }
-               }];
+            requestImageForAsset:asset
+            targetSize:size
+            contentMode:PHImageContentModeAspectFill
+            options:options
+            resultHandler:^(UIImage *_Nullable image, NSDictionary *_Nullable info) {
+                BOOL downloadFinined =
+                ![[info objectForKey:PHImageCancelledKey] boolValue] && ![info objectForKey:PHImageErrorKey];
+                //不要该判断，即如果该图片在iCloud上时候，会先显示一张模糊的预览图，待加载完毕后会显示高清图
+                // && ![[info objectForKey:PHImageResultIsDegradedKey] boolValue]
+                if (downloadFinined && completion)
+                {
+                    completion(image, info);
+                }
+            }];
 }
 #pragma mark - 导出视频
+
 - (PHImageRequestID)requestVideoWithAsset:(QYAssetModel *)asset
-                                   finish:(requestVideoBlock)finishBlock
-                                 progress:(downloadProgressBlock)progressHandler
+success:(requestVideoSucces)success
+failure:(requestFailBlock)failure
+progress:(downloadProgressBlock)progressHandler{
+    
+    return [self requestVideoWithAsset:asset finish:^(NSURL * _Nullable url, NSError * _Nullable error)
+            {
+                [self nx_handlerRequestVideo:url error:error sucess:success failure:failure];
+                
+            } progress:^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
+                
+                [self nx_handlerRequestImageProgress:progress error:error progressBlock:progressHandler failure:failure];
+                
+            }];
+}
+
+- (PHImageRequestID)requestVideoWithAsset:(QYAssetModel *)asset
+finish:(requestVideoBlock)finishBlock
+progress:(PHAssetVideoProgressHandler)progressHandler
 {
     if (!PHKitExists)
     {
         return -1;
     }
-
     PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
     options.networkAccessAllowed = YES;
     options.deliveryMode = PHVideoRequestOptionsDeliveryModeMediumQualityFormat;
@@ -571,18 +611,18 @@
     if (progressHandler)
     {
         options.progressHandler =
-            ^(double progress, NSError *_Nullable error, BOOL *_Nonnull stop, NSDictionary *_Nullable info) {
-
-                [self runMainThread:^{
-
-                    progressHandler(progress, error);
-                }];
-            };
+        ^(double progress, NSError *_Nullable error, BOOL *_Nonnull stop, NSDictionary *_Nullable info) {
+            
+            [self runMainThread:^{
+                
+                progressHandler(progress, error,stop,info);
+            }];
+        };
     }
     return [self requestVideoWithiAsset:asset.asset
                                 options:options
                                  finish:^(NSURL *videoPath, NSError *error) {
-
+                                     
                                      if (finishBlock)
                                      {
                                          [self runMainThread:^{
@@ -593,8 +633,8 @@
 }
 
 - (PHImageRequestID)requestVideoWithiAsset:(PHAsset *)asset
-                                   options:(PHVideoRequestOptions *)options
-                                    finish:(void (^)(NSURL *videoPath, NSError *error))finishBlock
+options:(PHVideoRequestOptions *)options
+finish:(void (^)(NSURL *videoPath, NSError *error))finishBlock
 {
     if (!PHKitExists)
     {
@@ -603,69 +643,109 @@
     __weak typeof(self) weakSelf = self;
     PHImageManager *imageManager = [PHImageManager defaultManager];
     PHImageRequestID requestId = [imageManager
-        requestAVAssetForVideo:asset
-                       options:options
-                 resultHandler:^(AVAsset *_Nullable asset, AVAudioMix *_Nullable audioMix,
-                                 NSDictionary *_Nullable info) {
-
-                     __strong typeof(weakSelf) strongSelf = weakSelf;
-                     NSLog(@"video info = %@", info);
-
-                     if ([[info objectForKey:PHImageCancelledKey] boolValue])
-                     {
-                         // PHImageCancelledKey 对应的值为真时代表用户手动取消云端下载
-                         NSLog(@"PHImageCancelledKey 对应的值为真时代表用户手动取消云端下载");
-                         return;
-                     }
-
-                     if ([asset isKindOfClass:[AVURLAsset class]])
-                     {
-                         NSURL *URL = [((AVURLAsset *)asset)URL];
-                         if (finishBlock)
-                         {
-                             finishBlock(URL, nil);
-                         }
-                     }
-                     else if ([asset isKindOfClass:[AVComposition class]])
-                     {
-                         //慢动作处理
-                         NSString *fileName =
-                             [NSString stringWithFormat:@"mergeSlowMoVideo_%lld.mov",
-                                                        (long long)[[NSDate date] timeIntervalSince1970]];
-                         NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(
-                             NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                         NSString *myPathDocs = [documentsDirectory stringByAppendingPathComponent:fileName];
-                         NSURL *url = [NSURL fileURLWithPath:myPathDocs];
-
-                         [strongSelf exportVideoWithComposition:asset
-                                                        fileUrl:url
-                                                     completion:^(NSURL *url, NSError *error) {
-
-                                                         if (finishBlock)
-                                                         {
-                                                             finishBlock(url, error);
-                                                         }
-                                                     }];
-                     }
-                 }];
+                                  requestAVAssetForVideo:asset
+                                  options:options
+                                  resultHandler:^(AVAsset *_Nullable asset, AVAudioMix *_Nullable audioMix,
+                                                  NSDictionary *_Nullable info) {
+                                      
+                                      __strong typeof(weakSelf) strongSelf = weakSelf;
+                                      NSLog(@"video info = %@", info);
+                                      
+                                      if ([[info objectForKey:PHImageCancelledKey] boolValue])
+                                      {
+                                          // PHImageCancelledKey 对应的值为真时代表用户手动取消云端下载
+                                          NSLog(@"PHImageCancelledKey 对应的值为真时代表用户手动取消云端下载");
+                                          return;
+                                      }
+                                      
+                                      if ([asset isKindOfClass:[AVURLAsset class]])
+                                      {
+                                          NSURL *URL = [((AVURLAsset *)asset)URL];
+                                          if (finishBlock)
+                                          {
+                                              finishBlock(URL, nil);
+                                          }
+                                      }
+                                      else if ([asset isKindOfClass:[AVComposition class]])
+                                      {
+                                          //慢动作处理
+                                          NSString *fileName =
+                                          [NSString stringWithFormat:@"mergeSlowMoVideo_%lld.mov",
+                                           (long long)[[NSDate date] timeIntervalSince1970]];
+                                          NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(
+                                                                                                              NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                                          NSString *myPathDocs = [documentsDirectory stringByAppendingPathComponent:fileName];
+                                          NSURL *url = [NSURL fileURLWithPath:myPathDocs];
+                                          
+                                          [strongSelf exportVideoWithComposition:asset
+                                                                         fileUrl:url
+                                                                      completion:^(NSURL *url, NSError *error) {
+                                                                          
+                                                                          if (finishBlock)
+                                                                          {
+                                                                              finishBlock(url, error);
+                                                                          }
+                                                                      }];
+                                      }
+                                  }];
     return requestId;
+}
+
+- (void)requestVideoWithLivePhoto:(QYAssetModel *)assetModel succes:(requestVideoSucces)success failure:(requestFailBlock) failure{
+    
+    [self requestVideoWithLivePhoto:assetModel finish:^(NSURL * _Nullable url, NSError * _Nullable error) {
+        
+        [self nx_handlerRequestVideo:url error:error sucess:success failure:false];
+    }];
+}
+
+- (void)requestVideoWithLivePhoto:(QYAssetModel *)assetModel finish:(requestVideoBlock)finishBlock
+{
+    __weak typeof(self) weakSelf = self;
+    if (assetModel.medaiType == QYPhotoAssetTypeLiviePhoto)
+    {
+        [assetModel.asset getLivePhotoOfMP4Data:^(NSData *data, NSString *filePath, UIImage *coverImage,NSError * error) {
+            if (finishBlock) {
+                
+                [weakSelf runMainThread:^{
+                    if (!error)
+                    {
+                        if (filePath.length > 0) {
+                            
+                            NSURL * videoUrl = [NSURL fileURLWithPath:filePath];
+                            finishBlock(videoUrl,nil);
+                            
+                        } else {
+                            
+                            NSError * error = [NSError errorWithDomain:@"live photo 导出路径异常" code:-10005 userInfo:@{@"error":@"live photo 导出路径异常"}];
+                            finishBlock(nil,error);
+                        }
+                        
+                    } else {
+                        
+                        finishBlock(nil,error);
+                    }
+                }];
+            }
+        }];
+    }
 }
 #pragma mark - 视频/图片元素的 save
 
 - (void)saveImageToAblum:(UIImage *)image
-         customAlbumName:(NSString *)cAlbumName
-              completion:(void (^)(BOOL, QYAssetModel *))completion
+customAlbumName:(NSString *)cAlbumName
+completion:(void (^)(BOOL, QYAssetModel *))completion
 {
     if (!PHKitExists)
     {
         return;
     }
     void (^block)(BOOL suc, QYAssetModel *asset) = ^(BOOL suc, QYAssetModel *asset) {
-
+        
         if (completion)
         {
             [self runMainThread:^{
-
+                
                 completion(suc, asset);
             }];
         }
@@ -686,33 +766,33 @@
             PHAssetChangeRequest *newAssetRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
             placeholderAsset = newAssetRequest.placeholderForCreatedAsset;
         }
-            completionHandler:^(BOOL success, NSError *_Nullable error) {
-                if (!success)
-                {
-                    block(NO, nil);
-                    return;
-                }
-                PHAsset *asset = [self getAssetFromlocalIdentifier:placeholderAsset.localIdentifier];
-                QYAssetModel *model = [[QYAssetModel alloc] initWithAsset:asset];
-                if (cAlbumName != nil)
-                {
-                    PHAssetCollection *desCollection = [self getDestinationCollectionWithName:cAlbumName];
-                    block(NO, nil);
-
-                    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-                        [[PHAssetCollectionChangeRequest changeRequestForAssetCollection:desCollection]
-                            addAssets:@[ asset ]];
-                    }
-                        completionHandler:^(BOOL success, NSError *_Nullable error) {
-
-                            block(success, model);
-                        }];
-                }
-                else
-                {
-                    block(success, model);
-                }
-            }];
+                                          completionHandler:^(BOOL success, NSError *_Nullable error) {
+                                              if (!success)
+                                              {
+                                                  block(NO, nil);
+                                                  return;
+                                              }
+                                              PHAsset *asset = [self getAssetFromlocalIdentifier:placeholderAsset.localIdentifier];
+                                              QYAssetModel *model = [[QYAssetModel alloc] initWithAsset:asset];
+                                              if (cAlbumName != nil)
+                                              {
+                                                  PHAssetCollection *desCollection = [self getDestinationCollectionWithName:cAlbumName];
+                                                  if (!desCollection) block(NO, nil);
+                                                  
+                                                  [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                                                      [[PHAssetCollectionChangeRequest changeRequestForAssetCollection:desCollection]
+                                                       addAssets:@[ asset ]];
+                                                  }
+                                                                                    completionHandler:^(BOOL success, NSError *_Nullable error) {
+                                                                                        
+                                                                                        block(success, model);
+                                                                                    }];
+                                              }
+                                              else
+                                              {
+                                                  block(success, model);
+                                              }
+                                          }];
     }
 }
 
@@ -722,25 +802,25 @@
 }
 
 - (void)saveVideoToAblum:(NSURL *)url
-         customAlbumName:(NSString *)cAlbumName
-              completion:(void (^)(BOOL, QYAssetModel *))completion
+customAlbumName:(NSString *)cAlbumName
+completion:(void (^)(BOOL, QYAssetModel *))completion
 {
     if (!PHKitExists)
     {
         return;
     }
     void (^block)(BOOL suc, PHAsset *asset) = ^(BOOL suc, PHAsset *asset) {
-
+        
         if (completion)
         {
             [self runMainThread:^{
-
+                
                 QYAssetModel *assetModel = [[QYAssetModel alloc] initWithAsset:asset];
                 completion(suc, assetModel);
             }];
         }
     };
-
+    
     PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
     if (status == PHAuthorizationStatusDenied)
     {
@@ -755,36 +835,36 @@
         __block PHObjectPlaceholder *placeholderAsset = nil;
         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
             PHAssetChangeRequest *newAssetRequest =
-                [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
+            [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
             placeholderAsset = newAssetRequest.placeholderForCreatedAsset;
         }
-            completionHandler:^(BOOL success, NSError *_Nullable error) {
-                if (!success)
-                {
-                    block(NO, nil);
-                    return;
-                }
-                PHAsset *asset = [self getAssetFromlocalIdentifier:placeholderAsset.localIdentifier];
-                if (cAlbumName != nil)
-                {
-                    PHAssetCollection *desCollection = [self getDestinationCollectionWithName:cAlbumName];
-                    if (!desCollection) completion(NO, nil);
-
-                    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-                        [[PHAssetCollectionChangeRequest changeRequestForAssetCollection:desCollection]
-                            addAssets:@[ asset ]];
-                    }
-                        completionHandler:^(BOOL success, NSError *_Nullable error) {
-
-                            block(success, asset);
-
-                        }];
-                }
-                else
-                {
-                    block(success, asset);
-                }
-            }];
+                                          completionHandler:^(BOOL success, NSError *_Nullable error) {
+                                              if (!success)
+                                              {
+                                                  block(NO, nil);
+                                                  return;
+                                              }
+                                              PHAsset *asset = [self getAssetFromlocalIdentifier:placeholderAsset.localIdentifier];
+                                              if (cAlbumName != nil)
+                                              {
+                                                  PHAssetCollection *desCollection = [self getDestinationCollectionWithName:cAlbumName];
+                                                  if (!desCollection) completion(NO, nil);
+                                                  
+                                                  [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                                                      [[PHAssetCollectionChangeRequest changeRequestForAssetCollection:desCollection]
+                                                       addAssets:@[ asset ]];
+                                                  }
+                                                                                    completionHandler:^(BOOL success, NSError *_Nullable error) {
+                                                                                        
+                                                                                        block(success, asset);
+                                                                                        
+                                                                                    }];
+                                              }
+                                              else
+                                              {
+                                                  block(success, asset);
+                                              }
+                                          }];
     }
 }
 - (void)saveVideoToAblum:(NSURL *)url completion:(void (^)(BOOL, QYAssetModel *))completion
@@ -801,17 +881,17 @@
         return;
     }
     void (^block)(BOOL suc, PHAsset *asset) = ^(BOOL suc, PHAsset *asset) {
-
+        
         if (completion)
         {
             [self runMainThread:^{
-
+                
                 QYAssetModel *assetModel = [[QYAssetModel alloc] initWithAsset:asset];
                 completion(suc, assetModel);
             }];
         }
     };
-
+    
     PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
     if (status == PHAuthorizationStatusDenied)
     {
@@ -826,34 +906,34 @@
         __block PHObjectPlaceholder *placeholderAsset = nil;
         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
             PHAssetChangeRequest *newAssetRequest =
-                [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:gifUrl];
+            [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:gifUrl];
             placeholderAsset = newAssetRequest.placeholderForCreatedAsset;
         }
-            completionHandler:^(BOOL success, NSError *_Nullable error) {
-                if (!success)
-                {
-                    block(NO, nil);
-                    return;
-                }
-                PHAsset *asset = [self getAssetFromlocalIdentifier:placeholderAsset.localIdentifier];
-                if (cAlbumName != nil)
-                {
-                    PHAssetCollection *desCollection = [self getDestinationCollectionWithName:cAlbumName];
-                    block(NO, nil);
-
-                    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-                        [[PHAssetCollectionChangeRequest changeRequestForAssetCollection:desCollection]
-                            addAssets:@[ asset ]];
-                    }
-                        completionHandler:^(BOOL success, NSError *_Nullable error) {
-                            block(success, asset);
-                        }];
-                }
-                else
-                {
-                    block(success, asset);
-                }
-            }];
+                                          completionHandler:^(BOOL success, NSError *_Nullable error) {
+                                              if (!success)
+                                              {
+                                                  block(NO, nil);
+                                                  return;
+                                              }
+                                              PHAsset *asset = [self getAssetFromlocalIdentifier:placeholderAsset.localIdentifier];
+                                              if (cAlbumName != nil)
+                                              {
+                                                  PHAssetCollection *desCollection = [self getDestinationCollectionWithName:cAlbumName];
+                                                  if (!desCollection) block(NO, nil);
+                                                  
+                                                  [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                                                      [[PHAssetCollectionChangeRequest changeRequestForAssetCollection:desCollection]
+                                                       addAssets:@[ asset ]];
+                                                  }
+                                                                                    completionHandler:^(BOOL success, NSError *_Nullable error) {
+                                                                                        block(success, asset);
+                                                                                    }];
+                                              }
+                                              else
+                                              {
+                                                  block(success, asset);
+                                              }
+                                          }];
     }
 }
 
@@ -885,9 +965,9 @@
     }
     //找是否已经创建自定义相册
     PHFetchResult<PHAssetCollection *> *collectionResult =
-        [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
-                                                 subtype:PHAssetCollectionSubtypeAlbumRegular
-                                                 options:nil];
+    [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                             subtype:PHAssetCollectionSubtypeAlbumRegular
+                                             options:nil];
     for (PHAssetCollection *collection in collectionResult)
     {
         if ([collection.localizedTitle isEqualToString:collectionName])
@@ -900,7 +980,7 @@
     NSError *error = nil;
     [[PHPhotoLibrary sharedPhotoLibrary] performChangesAndWait:^{
         collectionId = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:collectionName]
-                           .placeholderForCreatedAssetCollection.localIdentifier;
+        .placeholderForCreatedAssetCollection.localIdentifier;
     }
                                                          error:&error];
     if (error)
@@ -912,60 +992,60 @@
 }
 
 - (void)deleteMedaiWithAsset:(PHAsset *)asset
-        withCunstomAlubmName:(NSString *)albumName
-                  completion:(deleteAssetCompletionBlock)completion
+withCunstomAlubmName:(NSString *)albumName
+completion:(deleteAssetCompletionBlock)completion
 {
     if (!PHKitExists)
     {
         return;
     }
-
+    
     void (^block)(BOOL suc, NSError *error) = ^(BOOL suc, NSError *error) {
-
+        
         if (completion)
         {
             [self runMainThread:^{
-
+                
                 completion(suc, error);
             }];
         }
     };
-
+    
     if (asset)
     {
         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-
+            
             [PHAssetChangeRequest deleteAssets:@[ asset ]];
-
+            
         }
-            completionHandler:^(BOOL success, NSError *_Nullable error) {
-
-                if (albumName != nil)
-                {
-                    PHAssetCollection *desCollection = [self getDestinationCollectionWithName:albumName];
-                    block(NO, nil);
-
-                    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-                        [[PHAssetCollectionChangeRequest changeRequestForAssetCollection:desCollection]
-                            addAssets:@[ asset ]];
-                    }
-                        completionHandler:^(BOOL success, NSError *_Nullable error) {
-                            block(success, error);
-                        }];
-                }
-                else
-                {
-                    block(success, error);
-                }
-
-            }];
+                                          completionHandler:^(BOOL success, NSError *_Nullable error) {
+                                              
+                                              if (albumName != nil)
+                                              {
+                                                  PHAssetCollection *desCollection = [self getDestinationCollectionWithName:albumName];
+                                                  if (!desCollection)  block(NO, nil);
+                                                  
+                                                  [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                                                      [[PHAssetCollectionChangeRequest changeRequestForAssetCollection:desCollection]
+                                                       addAssets:@[ asset ]];
+                                                  }
+                                                                                    completionHandler:^(BOOL success, NSError *_Nullable error) {
+                                                                                        block(success, error);
+                                                                                    }];
+                                              }
+                                              else
+                                              {
+                                                  block(success, error);
+                                              }
+                                              
+                                          }];
     }
     else
     {
         NSError *error =
-            [NSError errorWithDomain:@"相册元素不存在" code:0 userInfo:@{
-                @"errorKey" : @"asset is nill"
-            }];
+        [NSError errorWithDomain:@"相册元素不存在" code:0 userInfo:@{
+                                                              @"errorKey" : @"asset is nill"
+                                                              }];
         block(NO, error);
     }
 }
@@ -976,11 +1056,11 @@
 }
 #pragma mark 导出视频
 - (void)exportVideoWithComposition:(AVAsset *)asset
-                           fileUrl:(NSURL *)fileUrl
-                        completion:(void (^)(NSURL *url, NSError *error))completion
+fileUrl:(NSURL *)fileUrl
+completion:(void (^)(NSURL *url, NSError *error))completion
 {
     AVAssetExportSession *exporter =
-        [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetHighestQuality];
+    [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetHighestQuality];
     exporter.outputURL = fileUrl;
     exporter.outputFileType = AVFileTypeQuickTimeMovie;
     exporter.shouldOptimizeForNetworkUse = YES;
@@ -1042,6 +1122,53 @@
         return;
     }
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:observer];
+}
+
+#pragma mark - 处理导出视频、照片的回调
+-(void)nx_handlerRequestImage:(UIImage *) image success:(requestImagSuccessBlock)success failure:(requestFailBlock)failure{
+    
+    if (image)
+    {
+        if (success)
+        {
+            success(image);
+        }
+    } else {
+        NSLog(@"图片获取失败");
+        NSError * error = [NSError errorWithDomain:@"获取图片失败" code:-10004 userInfo:@{@"errorInfo":@"获取目标图片失败"}];
+        if (failure)
+        {
+            failure(error);
+        }
+    }
+}
+- (void)nx_handlerRequestVideo:(NSURL *)url error:(NSError *)error sucess:(requestVideoSucces)success failure:(requestFailBlock) failureBlock{
+    
+    if (error) {
+        if (failureBlock) {
+            
+            failureBlock(error);
+        }
+    } else {
+        if (success)
+        {
+            success(url);
+        }
+    }
+}
+- (void)nx_handlerRequestImageProgress:(double)progress error:(NSError *)error progressBlock:(downloadProgressBlock)progressBlock failure:(requestFailBlock)failure{
+    if (error) {
+        
+        if (failure)
+        {
+            failure(error);
+        }
+    } else {
+        if (progressBlock)
+        {
+            progressBlock(progress);
+        }
+    }
 }
 #endif
 @end

@@ -11,46 +11,47 @@
 #import "QYAssetModel.h"
 #import "QYGroupModel.h"
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 #import <Photos/Photos.h>
 #endif
+
 @interface QYPhotoService : NSObject
 
 + (instancetype)shareInstanced;
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0
-/**
- 是否具有相册权限
-
- @return YES 已经授权 -- NO 未授权
- */
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
+///**
+// 是否具有相册权限
+//
+// @return YES 已经授权 -- NO 未授权
+// */
 + (BOOL)hasAlbumAuthor;
 
 + (void)requestAuthor:(void (^)(BOOL hasAuthor))block;
 /**
  相册权限状态
-
+ 
  @return 权限状态枚举
  */
 + (QYAuthorizationStatus)albumPermissonStatues;
 
 /**
  获取 获取用户所有相册列表
-
+ 
  @param completion 读取完成之后的回调
  */
 - (void)fetchAllGroupsWithcompletion:(fetchAlbumCompletion)completion;
 
 /**
  获取相册用户所有相册列表
-
+ 
  @param type 筛选type
  @param completion 完成回调
  */
 - (void)fetchAllGroupsWithType:(QYPhotoLibarayAssertType)type completion:(fetchAlbumCompletion)completion;
 /**
  获取相机胶卷相册列表对象
-
+ 
  @param type  筛选type
  @param completion 读取完成之后的回调
  */
@@ -58,7 +59,8 @@
 
 #pragma mark--图片获取接口
 - (PHImageRequestID)requestOriginalImageForAsset:(QYAssetModel *)asset
-                                      completion:(requestImageBlock)completion
+                                         success:(requestImagSuccessBlock)success
+                                         failure:(requestFailBlock)failure
                                    progressBlock:(downloadProgressBlock)progressBlock;
 
 /**
@@ -66,18 +68,24 @@
  */
 - (PHImageRequestID)requestImageForAsset:(QYAssetModel *)asset
                                     size:(CGSize)size
-                              completion:(requestImageBlock)completion
+                                 success:(requestImagSuccessBlock)success
+                                 failure:(requestFailBlock)failure
                            progressBlock:(downloadProgressBlock)progressBlock;
 
 #pragma 导出视频
+
+
 - (PHImageRequestID)requestVideoWithAsset:(QYAssetModel *)asset
-                                   finish:(requestVideoBlock)finishBlock
+                                  success:(requestVideoSucces)success
+                                  failure:(requestFailBlock)failure
                                  progress:(downloadProgressBlock)progressHandler;
+
+- (void)requestVideoWithLivePhoto:(QYAssetModel *)assetModel succes:(requestVideoSucces)success failure:(requestFailBlock) failure;
 #pragma mark - 图片和视频的保存
 
 /**
  将本地图片存入系统相册
-
+ 
  @param imageUrl 图片路径
  @param cAlbumName 自定义相册
  @param completion 完成回调
@@ -88,7 +96,7 @@
 
 /**
  存入一张图片到系统相册
-
+ 
  @param image 图片对象
  @param cAlbumName 自定义相册
  @param completion 完成回调
@@ -99,7 +107,7 @@
 
 /**
  存入一张图片到相册
-
+ 
  @param image 图片对象
  @param completion 完成回调
  */
@@ -107,7 +115,7 @@
 
 /**
  保存视频到相册
-
+ 
  @param url 视频路径
  @param cAlbumName 自定义相册
  @param completion 完成回调
@@ -118,7 +126,7 @@
 
 /**
  保存视频到相册
-
+ 
  @param url 视频路径
  @param completion 完成回调
  */

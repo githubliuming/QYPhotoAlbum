@@ -9,6 +9,7 @@
 #ifndef QYPhotoConstant_h
 #define QYPhotoConstant_h
 @class UIImage;
+@class QYGroupModel;
 typedef NS_ENUM(NSInteger, QYPhotoLibarayAssertType) {
 
     QYPhotoLibarayAssertTypeAll,                 //相册所有元素
@@ -38,12 +39,14 @@ typedef NS_ENUM(NSInteger, QYAuthorizationStatus) {
     QYAuthorizationStatusAuthorized          // 用户授权此应用程序访问图片数据
 };
 
-typedef void (^fetchAlbumCompletion)(NSArray* _Nullable array);
-typedef void (^downloadProgressBlock)(double progress, NSError* _Nullable error);
-typedef void (^requestImageBlock)(UIImage* _Nullable image);
-typedef void (^requestVideoBlock)(NSURL* _Nullable url, NSError* _Nullable error);
+typedef void (^fetchAlbumCompletion)(NSArray<QYGroupModel *> * _Nullable array);
+typedef void (^downloadProgressBlock)(double progress);
+
+typedef void (^requestImagSuccessBlock)(UIImage * _Nullable image);
+typedef void (^requestFailBlock)(NSError * _Nullable error);
+
+typedef void (^requestVideoSucces)(NSURL * _Nullable url);
+
 typedef void (^deleteAssetCompletionBlock)(BOOL success, NSError* _Nullable error);
 
-#pragma mark - notificationName
-#define QYPhotoLibraryhasChangedNotification @"QYPhotoLibraryhasChangedNotification"
 #endif /* QYPhotoConstant_h */

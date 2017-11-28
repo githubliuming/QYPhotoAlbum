@@ -7,12 +7,14 @@
 //
 
 #import "QYAssetModel.h"
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 #import <Photos/PHAsset.h>
-#import "QYPhotoService.h"
-#import "PHAsset+covertToMP4.h"
+#endif
+#import <objc/runtime.h>
+
 @interface QYAssetModel ()
 
-@property(nonatomic, assign) PHImageRequestID requestID;
 @end
 @implementation QYAssetModel
 
@@ -43,8 +45,9 @@
             return QYPhotoAssetTypeVideo;
         }
         case PHAssetMediaTypeImage:
+            
             if ([[asset valueForKey:@"filename"] hasSuffix:@"GIF"]) return QYPhotoAssetTypeGif;
-
+            
             if (asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive || asset.mediaSubtypes == 10)
                 return QYPhotoAssetTypeLiviePhoto;
 

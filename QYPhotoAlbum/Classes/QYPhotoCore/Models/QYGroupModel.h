@@ -12,7 +12,7 @@
 
 @interface QYGroupModel : NSObject<NSCopying, NSMutableCopying>
 @property(nonatomic, strong) PHAssetCollection* collection;
-@property(nonatomic, strong) NSMutableArray* asstArray;  ///<* 筛选出的
+@property(nonatomic, strong) NSMutableArray<QYAssetModel *>* asstArray;  ///<* 筛选出的
 @property(nonatomic, assign) NSInteger count;
 
 @end
