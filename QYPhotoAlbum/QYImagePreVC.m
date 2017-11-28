@@ -33,6 +33,20 @@
                                                     progressBlock:nil];
 }
 
+-(NSArray<id<UIPreviewActionItem>> *)previewActionItems
+{
+    UIPreviewAction * action1 = [UIPreviewAction actionWithTitle:@"收藏" style:1 handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        NSLog(@"收藏");
+    }];
+    
+    UIPreviewAction * action2 = [UIPreviewAction actionWithTitle:@"喜欢" style:0 handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        NSLog(@"喜欢");
+        
+    }];
+    NSArray *items = @[action1,action2];
+    return items;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

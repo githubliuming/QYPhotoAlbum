@@ -10,7 +10,10 @@
 #import "PLSystemAlbumCell.h"
 #import "QYImagePreVC.h"
 #import "SDAutoLayout.h"
-@interface QYPhotoListVC ()<UICollectionViewDelegate, UICollectionViewDataSource>
+#import "QYImagePreVC.h"
+#define leftAndRightMargin 0.0f
+
+@interface QYPhotoListVC ()<UICollectionViewDelegate, UICollectionViewDataSource,UIViewControllerPreviewingDelegate>
 
 @property(nonatomic, strong) UICollectionView *collectionView;
 
@@ -43,7 +46,7 @@
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    float AlbumWidth = ((CGRectGetWidth(self.view.bounds) - 12. * 2. - 5.f * 2.) / 3.);
+    float AlbumWidth = ((CGRectGetWidth(self.view.bounds) - leftAndRightMargin * 2. - 5.f * 2.) / 3.);
     return CGSizeMake(AlbumWidth, AlbumWidth);
 }
 - (CGFloat)collectionView:(UICollectionView *)collectionView
@@ -79,7 +82,7 @@
         insetForSectionAtIndex:(NSInteger)section
 {
     //最左边 和最右边
-    return UIEdgeInsetsMake(0, 12.0f, 0, 12.0f);
+    return UIEdgeInsetsMake(0, leftAndRightMargin, 0, leftAndRightMargin);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -101,6 +104,7 @@
 {
     static NSString *reuserId = @"PLSystemAlbumCell";
     PLSystemAlbumCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuserId forIndexPath:indexPath];
+    [self registerForPreviewingWithDelegate:self sourceView:cell];
     cell.animationStart = NO;
     QYAssetModel *model = [self.dataSource objectAtIndex:indexPath.row];
     cell.assetModel = model;
@@ -116,5 +120,17 @@
     [self.navigationController pushViewController:imagePrc animated:YES];
 }
 
+
+- (UIViewController *)previewingContext:(id <UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location{
+    //通过[previewingContext sourceView]拿到对应的cell的数据；
+    NSIndexPath *indexPath = [_collectionView indexPathForCell:(UICollectionViewCell*)[previewingContext sourceView]];
+    QYImagePreVC *preVC = [[QYImagePreVC alloc] init];
+    preVC.assetModel = self.dataSource[indexPath.row];
+    return preVC;
+}
+#pragma mark -  pop的代理方法，在此处可对将要进入的vc进行处理
+- (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit
+{
+}
 - (void)dealloc { NSLog(@"list vc dealloc"); }
 @end
